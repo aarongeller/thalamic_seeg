@@ -1,6 +1,6 @@
 function [Fxy, Fyx] = do_seeded_gc(eegdata, srate, channelinfo, ...
                                    seedstr, startsample, endsample, ...
-                                   figsdir, debug)
+                                   absolute_offset, figsdir, debug)
 
 tic;
 
@@ -32,6 +32,7 @@ else
                                   order, srate, freqs);
 end
 
-do_fxy_plots(Fxy, Fyx, channel_names, seedstr, freqs, startsample/srate, srate, figsdir);
+do_fxy_plots(Fxy, Fyx, channel_names, seedstr, freqs, ...
+             startsample/srate + absolute_offset, srate, figsdir);
 
 toc;
