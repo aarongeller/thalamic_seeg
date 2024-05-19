@@ -4,12 +4,13 @@ import os, sys
 from glob import glob
 
 subjname = sys.argv[1]
+topdir = sys.argv[2]
 
-figspath = os.path.join(subjname, "figs", "granger")
+figspath = os.path.join(subjname, "figs", topdir)
 figspath_forward = os.path.join(figspath, "forward")
 figspath_backward = os.path.join(figspath, "backward")
 
-texfname = os.path.join(subjname, subjname + "_granger.tex")
+texfname = os.path.join(subjname, subjname + "_" + topdir + ".tex")
 texf = open(texfname, 'w')
 
 subjname_parts = subjname.split("_")
