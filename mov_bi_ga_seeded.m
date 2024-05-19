@@ -1,4 +1,4 @@
-function [Fxy,Fyx] = mov_bi_ga_seeded(dat,seedchan,startp,endp,win,order,fs,freq)
+function [Fxy,Fyx] = mov_bi_ga_seeded(dat,seedchan,startp,endp,win,order,fs,freq,docirc)
 % MOV_BI_GA_SEEDED Compute the granger causality from the moving window Bivariate models
 % 
 % Usage:
@@ -28,6 +28,10 @@ function [Fxy,Fyx] = mov_bi_ga_seeded(dat,seedchan,startp,endp,win,order,fs,freq
 
 % modified from BSMART toolbox.
 
+if ~exist('docirc','var')
+    docirc = 0;
+end
+
 channel = size(dat,2);
 trial   = size(dat,3);
 points  = endp-startp+1;
@@ -37,13 +41,20 @@ fyx = [];
 b = zeros(2,trial*win);
 count = 0;
 total = (points-win+1)*(channel-1);
+
+if docirc
+    % for permutation testing
+    sliceafter = randi(size(dat,1));
+    dat(:,seedchan,:) = circshift(dat(:,seedchan,:), sliceafter);
+end
+
 p = gcp; % 4 workers
 ppm = ParforProgressbar(total, 'parpool', {'local', 4}, ...
                         'showWorkerProgress', true, 'title', ...
                         'Granger Causality Calculation');
 
 parfor t = 1:points-win+1
-    endind = t+startp+win-2
+    endind = t+startp+win-2;
     a = dat(t+startp-1:endind,:,:);
     b = zeros(2, win);
     for c = 1:channel
