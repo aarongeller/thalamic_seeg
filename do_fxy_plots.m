@@ -1,5 +1,4 @@
-function do_fxy_plots(Fxy, Fyx, channel_names, seedstr, freqs, offset, ...
-                      srate, figsdir)
+function do_fxy_plots(gc_info, offset, figsdir)
 
 if ~exist(figsdir, 'dir')
     mkdir(figsdir);
@@ -15,28 +14,30 @@ if ~exist(backwarddir, 'dir')
     mkdir(backwarddir);
 end
 
+tic;
+
 p = gcp;
-total = size(Fxy,1);
+total = size(gc_info.Fxy,1);
 ppm = ParforProgressbar(total, 'parpool', {'local', 4}, ...
                         'showWorkerProgress', true, 'title', ...
                         'Plotting Forward Connectivity');
 
 baseline_secs = 15;
-zFxy = do_zscore(Fxy, 1:srate*baseline_secs);
-zFyx = do_zscore(Fyx, 1:srate*baseline_secs);
+zFxy = do_zscore(gc_info.Fxy, 1:gc_info.srate*baseline_secs);
+zFyx = do_zscore(gc_info.Fyx, 1:gc_info.srate*baseline_secs);
 
-[channel_names, inds] = sort(channel_names);
+[channel_names, inds] = sort(gc_info.channel_names);
 
-parfor i=1:size(Fxy,1)
-    figname = [sprintf('%03d', i) '_' seedstr '_' channel_names{i} '.png'];
+parfor i=1:size(gc_info.Fxy,1)
+    figname = [sprintf('%03d', i) '_' gc_info.seedstr '_' channel_names{i} '.png'];
     figpath = fullfile(forwarddir, figname);
-    titstr = [seedstr ' -> ' channel_names{i}];
-    do_tfs_fig(squeeze(Fxy(inds(i),:,:)), [0 3], freqs, srate, offset, titstr, figpath);
+    titstr = [gc_info.seedstr ' -> ' channel_names{i}];
+    do_tfs_fig(squeeze(gc_info.Fxy(inds(i),:,:)), [0 3], gc_info.freqs, gc_info.srate, offset, titstr, figpath);
 
-    zfigname = ['z_' sprintf('%03d', i) '_' seedstr '_' channel_names{i} '.png'];
+    zfigname = ['z_' sprintf('%03d', i) '_' gc_info.seedstr '_' channel_names{i} '.png'];
     zfigpath = fullfile(forwarddir, zfigname);
-    ztitstr = ['Z-Score ' seedstr ' -> ' channel_names{i}];
-    do_tfs_fig(squeeze(zFxy(inds(i),:,:)), [-15 15], freqs, srate, offset, ...
+    ztitstr = ['Z-Score ' gc_info.seedstr ' -> ' channel_names{i}];
+    do_tfs_fig(squeeze(zFxy(inds(i),:,:)), [-15 15], gc_info.freqs, gc_info.srate, offset, ...
                ztitstr, zfigpath);
 
     pause(100/total);
@@ -47,16 +48,16 @@ delete(ppm);
 ppm = ParforProgressbar(total, 'parpool', {'local', 4}, ...
                         'showWorkerProgress', true, 'title', ...
                         'Plotting Backward Connectivity');
-parfor i=1:size(Fyx,1)
-    figname = [sprintf('%03d', i) '_' channel_names{i} '_' seedstr '.png'];
+parfor i=1:size(gc_info.Fyx,1)
+    figname = [sprintf('%03d', i) '_' channel_names{i} '_' gc_info.seedstr '.png'];
     figpath = fullfile(backwarddir, figname);
-    titstr = [channel_names{i} ' -> ' seedstr];
-    do_tfs_fig(squeeze(Fyx(inds(i),:,:)), [0 3], freqs, srate, offset, titstr, figpath);
+    titstr = [channel_names{i} ' -> ' gc_info.seedstr];
+    do_tfs_fig(squeeze(gc_info.Fyx(inds(i),:,:)), [0 3], gc_info.freqs, gc_info.srate, offset, titstr, figpath);
 
-    zfigname = ['z_' sprintf('%03d', i) '_' channel_names{i} '_' seedstr '.png'];
+    zfigname = ['z_' sprintf('%03d', i) '_' channel_names{i} '_' gc_info.seedstr '.png'];
     zfigpath = fullfile(backwarddir, zfigname);
-    ztitstr = ['Z-Score ' channel_names{i} ' -> ' seedstr];
-    do_tfs_fig(squeeze(zFyx(inds(i),:,:)), [-15 15], freqs, srate, offset, ...
+    ztitstr = ['Z-Score ' channel_names{i} ' -> ' gc_info.seedstr];
+    do_tfs_fig(squeeze(zFyx(inds(i),:,:)), [-15 15], gc_info.freqs, gc_info.srate, offset, ...
                ztitstr, zfigpath);
 
     pause(100/total);
@@ -65,6 +66,7 @@ end
 delete(ppm);
 
 close all;
+toc;
 
 function do_tfs_fig(dat, cl, freqs, srate, offset, titstr, figpath)
 figure('visible', 'off'); 
