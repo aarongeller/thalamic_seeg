@@ -17,29 +17,40 @@ switch subj
         offset_s = 0;
         eegfile = 'data_block001_02_notch.mat';
         extra_offset = 60; % for TFS plot if we want to adjust time axis
-        outputdir = 'granger_onset';
     elseif strcmp(cond, 'offset')
         offset_s = 70;
         eegfile = 'data_block001_notch.mat';
         extra_offset = 0;
-        outputdir = 'granger_offset';
     end
-    figsdir = fullfile('UCHSN/figs', outputdir);;
   case 'UCHGG'
     prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHGG/UCHGG_25_08_23__21_20_17';    
-    duration_s = 30;
     seedstr = 'RPI1';
-    if strcmp(cond, 'onset')
+    switch cond
+      case 'onset'
+        duration_s = 30;
+        offset_s = 60;
+        extra_offset = 0;
         eegfile = 'data_block001_04_notch.mat';
-    elseif strcmp(cond, 'offset')
+      case 'offset'
+        duration_s = 30;
+        offset_s = 0;
+        extra_offset = 151;
         eegfile = 'data_block001_02_notch.mat';
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 70;
+        extra_offset = 0;
+        eegfile = 'data_block001_resample_notch.mat';
     end
 end
-    
+
+outputdir = ['granger_' cond];
+figsdir = fullfile(subj, 'figs', outputdir);
+
 load(fullfile(prefix, 'channel.mat'));
 load(fullfile(prefix, eegfile));
 
-srate = get_bs_srate(History); % History is saved in brainstorm datafile
+srate = 1/mean(diff(Time)); % assumes SR constant over the file
 start_sample = round(srate*offset_s) + 1;
 end_sample = start_sample + round(srate*duration_s);
 
