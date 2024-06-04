@@ -1,4 +1,5 @@
-function do_gc_anal(subj, cond, overwrite_data, overwrite_figs)
+function do_gc_anal(subj, cond, overwrite_data, overwrite_figs, ...
+                    tfsclim, clim)
 
 if ~exist('overwrite_data', 'var')
     overwrite_data = 0;
@@ -6,6 +7,14 @@ end
 
 if ~exist('overwrite_figs', 'var')
     overwrite_figs = 1;
+end
+
+if ~exist('tfsclim', 'var')
+    tfsclim = [0 3];
+end
+
+if ~exist('zclim', 'var')
+    zclim = [-15 15];
 end
 
 switch subj
@@ -42,6 +51,27 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001_resample_notch.mat';
     end
+  case 'UCHVG'
+    prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHVG/UCHVG_25_07_23__03_33_09';
+    seedstr = 'LANT1';
+    switch cond
+      case 'wholesz'
+        duration_s = 93; % getting error if we include second 155
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
+    end
+  case 'UCHDR2'
+    prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHDR240313/UCHDR240313_15_03_24__09_02_27';
+    seedstr = 'LTOM1';
+    switch cond
+      case 'wholesz'
+        duration_s = 35; % getting error if we include second 155
+        offset_s = 45;
+        extra_offset = 0;
+        eegfile = 'data_block001_notch.mat';
+    end
+
 end
 
 outputdir = ['granger_' cond];
@@ -62,6 +92,9 @@ datapath = fullfile(subj, filename);
 if ~exist(datapath, 'file') || overwrite_data
     gc_info = do_seeded_gc(F, srate, Channel, seedstr, start_sample, end_sample);
     eval([varname ' = gc_info;']);
+    if ~exist(subj, 'dir')
+        mkdir(subj);
+    end
     save(datapath, varname);
 else
     load(datapath);
@@ -70,7 +103,8 @@ end
 
 % make figs if necessary
 if overwrite_figs
-    do_fxy_plots(gc_info, start_sample/srate + extra_offset, figsdir);
+    do_fxy_plots(gc_info, start_sample/srate + extra_offset, figsdir, ...
+                 tfsclim, zclim);
     system(['python make_gc_pdf.py ' subj ' granger_' cond]);
 end
 
