@@ -1,4 +1,4 @@
-function do_fxy_plots(gc_info, offset, figsdir)
+function do_fxy_plots(gc_info, offset, figsdir, tfsclim, zclim)
 
 if ~exist(figsdir, 'dir')
     mkdir(figsdir);
@@ -32,12 +32,12 @@ parfor i=1:size(gc_info.Fxy,1)
     figname = [sprintf('%03d', i) '_' gc_info.seedstr '_' channel_names{i} '.png'];
     figpath = fullfile(forwarddir, figname);
     titstr = [gc_info.seedstr ' -> ' channel_names{i}];
-    do_tfs_fig(squeeze(gc_info.Fxy(inds(i),:,:)), [0 3], gc_info.freqs, gc_info.srate, offset, titstr, figpath);
+    do_tfs_fig(squeeze(gc_info.Fxy(inds(i),:,:)), tfsclim, gc_info.freqs, gc_info.srate, offset, titstr, figpath);
 
     zfigname = ['z_' sprintf('%03d', i) '_' gc_info.seedstr '_' channel_names{i} '.png'];
     zfigpath = fullfile(forwarddir, zfigname);
     ztitstr = ['Z-Score ' gc_info.seedstr ' -> ' channel_names{i}];
-    do_tfs_fig(squeeze(zFxy(inds(i),:,:)), [-15 15], gc_info.freqs, gc_info.srate, offset, ...
+    do_tfs_fig(squeeze(zFxy(inds(i),:,:)), zclim, gc_info.freqs, gc_info.srate, offset, ...
                ztitstr, zfigpath);
 
     pause(100/total);
@@ -52,12 +52,12 @@ parfor i=1:size(gc_info.Fyx,1)
     figname = [sprintf('%03d', i) '_' channel_names{i} '_' gc_info.seedstr '.png'];
     figpath = fullfile(backwarddir, figname);
     titstr = [channel_names{i} ' -> ' gc_info.seedstr];
-    do_tfs_fig(squeeze(gc_info.Fyx(inds(i),:,:)), [0 3], gc_info.freqs, gc_info.srate, offset, titstr, figpath);
+    do_tfs_fig(squeeze(gc_info.Fyx(inds(i),:,:)), tfsclim, gc_info.freqs, gc_info.srate, offset, titstr, figpath);
 
     zfigname = ['z_' sprintf('%03d', i) '_' channel_names{i} '_' gc_info.seedstr '.png'];
     zfigpath = fullfile(backwarddir, zfigname);
     ztitstr = ['Z-Score ' channel_names{i} ' -> ' gc_info.seedstr];
-    do_tfs_fig(squeeze(zFyx(inds(i),:,:)), [-15 15], gc_info.freqs, gc_info.srate, offset, ...
+    do_tfs_fig(squeeze(zFyx(inds(i),:,:)), zclim, gc_info.freqs, gc_info.srate, offset, ...
                ztitstr, zfigpath);
 
     pause(100/total);
