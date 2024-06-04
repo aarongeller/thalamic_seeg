@@ -24,7 +24,7 @@ else
     channel_names = {channelinfo.Name};
     [eegdata, channel_names, seednum] = exclude_channels(eegdata, channel_names, seedstr);
     windowlength = 100;
-    order = 20; % for 200 Hz data gives half cycle of 5 Hz wave
+    order = 10; % order 20 for 200 Hz data gives half cycle of 5 Hz wave
     freqs = 5:5:srate/2;
 
     [Fxy, Fyx] = mov_bi_ga_seeded(eegdata', seednum, startsample, endsample, windowlength, ...
