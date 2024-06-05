@@ -67,7 +67,13 @@ parfor t = 1:points-win+1
                 b(2, (k-1)*win+1:k*win) = a(:, c, k);
             end
             b = zscore(detrend(b'))';
-            [~, ~, fxy(c,:,t), fyx(c,:,t)] = pwcausal(b, trial, win, order, fs, freq);
+            try
+                [~, ~, fxy(c,:,t), fyx(c,:,t)] = pwcausal(b, trial, win, order, fs, freq);
+            catch
+                display('Error in armorf, matrix not positive definite, using NaNs.');
+                fxy(c,:,t) = nan(size(b,1)-1, length(freq));
+                fyx(c,:,t) = nan(size(b,1)-1, length(freq));
+            end
             pause(100/total);
             ppm.increment();
         end
