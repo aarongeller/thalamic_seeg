@@ -17,9 +17,11 @@ if ~exist('zclim', 'var')
     zclim = [-15 15];
 end
 
+datapath = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/';
+
 switch subj
   case 'UCHSN'
-    prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHSN/UCHSN_09_04_23__16_36_19';
+    prefix = fullfile(datapath, 'UCHSN/UCHSN_09_04_23__16_36_19');
     duration_s = 30;
     seedstr = 'LCM2';
     if strcmp(cond, 'onset')
@@ -32,7 +34,7 @@ switch subj
         extra_offset = 0;
     end
   case 'UCHGG'
-    prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHGG/UCHGG_25_08_23__21_20_17';    
+    prefix = fullfile(datapath, 'UCHGG/UCHGG_25_08_23__21_20_17');
     seedstr = 'RPI1';
     switch cond
       case 'onset'
@@ -52,21 +54,26 @@ switch subj
         eegfile = 'data_block001_resample_notch.mat';
     end
   case 'UCHVG'
-    prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHVG/UCHVG_25_07_23__03_33_09';
+    prefix = fullfile(datapath, 'UCHVG/UCHVG_25_07_23__03_33_09');
     seedstr = 'LANT1';
     switch cond
+      case 'finderror'
+        duration_s = 5;
+        offset_s = 152; % getting error if we include second 155
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
       case 'wholesz'
-        duration_s = 93; % getting error if we include second 155
+        duration_s = 120;
         offset_s = 60;
         extra_offset = 0;
         eegfile = 'data_block001_04.mat';
     end
   case 'UCHDR2'
-    prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/UCHDR240313/UCHDR240313_15_03_24__09_02_27';
+    prefix = fullfile(datapath, 'UCHDR240313/UCHDR240313_15_03_24__09_02_27');
     seedstr = 'LTOM1';
     switch cond
       case 'wholesz'
-        duration_s = 35; % getting error if we include second 155
+        duration_s = 35;
         offset_s = 45;
         extra_offset = 0;
         eegfile = 'data_block001_notch.mat';
