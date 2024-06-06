@@ -24,6 +24,9 @@ switch subj
     prefix = fullfile(datapath, 'UCHSN/UCHSN_09_04_23__16_36_19');
     duration_s = 30;
     seedstr = 'LCM2';
+    sz_onset_s = 81.6;
+    % sz_offset_s = 99;
+    sz_offset_s = nan;
     if strcmp(cond, 'onset')
         offset_s = 0;
         eegfile = 'data_block001_02_notch.mat';
@@ -36,6 +39,8 @@ switch subj
   case 'UCHGG'
     prefix = fullfile(datapath, 'UCHGG/UCHGG_25_08_23__21_20_17');
     seedstr = 'RPI1';
+    sz_onset_s = 83;
+    sz_offset_s = 180;
     switch cond
       case 'onset'
         duration_s = 30;
@@ -56,10 +61,12 @@ switch subj
   case 'UCHVG'
     prefix = fullfile(datapath, 'UCHVG/UCHVG_25_07_23__03_33_09');
     seedstr = 'LANT1';
+    sz_onset_s = 83.4;
+    sz_offset_s = 171;
     switch cond
       case 'finderror'
         duration_s = 5;
-        offset_s = 152; % getting error if we include second 155
+        offset_s = 152; % was getting error if including second 155
         extra_offset = 0;
         eegfile = 'data_block001_04.mat';
       case 'wholesz'
@@ -71,6 +78,8 @@ switch subj
   case 'UCHDR2'
     prefix = fullfile(datapath, 'UCHDR240313/UCHDR240313_15_03_24__09_02_27');
     seedstr = 'LTOM1';
+    sz_onset_s = 59.7;
+    sz_offset_s = 76;
     switch cond
       case 'wholesz'
         duration_s = 35;
@@ -111,7 +120,7 @@ end
 % make figs if necessary
 if overwrite_figs
     do_fxy_plots(gc_info, start_sample/srate + extra_offset, figsdir, ...
-                 tfsclim, zclim);
+                 tfsclim, zclim, sz_onset_s, sz_offset_s);
     system(['python make_gc_pdf.py ' subj ' granger_' cond]);
 end
 
