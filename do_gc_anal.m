@@ -102,7 +102,7 @@ end_sample = start_sample + round(srate*duration_s);
 
 varname =  [subj '_gcinfo_' cond];
 filename = [varname '.mat'];
-datapath = fullfile(subj, filename);
+datapath = fullfile("analyses", subj, filename);
 
 % compute gc if necessary
 if ~exist(datapath, 'file') || overwrite_data
