@@ -6,7 +6,7 @@ from glob import glob
 subjname = sys.argv[1]
 topdir = sys.argv[2]
 
-figspath = os.path.join(subjname, "figs", topdir)
+figspath = os.path.join("analyses", subjname, "figs", topdir)
 figspath_forward = os.path.join(figspath, "forward")
 figspath_backward = os.path.join(figspath, "backward")
 
@@ -70,5 +70,5 @@ texf.write(postamble)
 
 texf.close()
 
-os.system("pdflatex -output-directory " + subjname + " " + texfname)
-os.system("pdflatex -output-directory " + subjname + " " + texfname)
+os.system("pdflatex -output-directory " + os.path.join("analyses", subjname) + " " + texfname)
+os.system("pdflatex -output-directory " + os.path.join("analyses", subjname) + " " + texfname)
