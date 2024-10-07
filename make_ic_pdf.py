@@ -18,19 +18,7 @@ if len(subjname_parts) > 1:
 title = subjname + " Imaginary Coherence Figures"
 preamble = "\\documentclass[12pt]{article}\n\\usepackage{graphicx}\n" \
     + "\\renewcommand{\\familydefault}{\\sfdefault}\n\\title{" + title + "}\n" \
-    + "\\begin{document}\n\\maketitle\clearpage\pagenumbering{gobble}\n\n" \
-    # + "\\setlength\\LTleft{-40mm}\\begin{landscape}\n\\hspace{-4cm}\n\\begin{longtable}{|c|c|c|c|c|}\n" \
-    # + "\caption{Granger causality plots.} \label{tab:long} \\\\\n\n" \
-    # + "\hline \multicolumn{1}{|c|}{\\textbf{Channel pair}} & \multicolumn{1}{c|}{\\textbf{Forward GC}} & \multicolumn{1}{c|}{\\textbf{Backward GC}} & \multicolumn{1}{c|}{\\textbf{z(Forward GC)}} & \multicolumn{1}{c|}{\\textbf{z(Backward GC)}} \\\\ \hline\n" \
-    # + "\endfirsthead\n\n" \
-    # + "\multicolumn{5}{c}%\n" \
-    # + "{{\\bfseries \\tablename\ \\thetable{} -- continued from previous page}} \\\\\n" \
-    # + "\hline \multicolumn{1}{|c|}{\\textbf{Channel pair}} & \multicolumn{1}{c|}{\\textbf{Forward GC}} & \multicolumn{1}{c|}{\\textbf{Backward GC}} & \multicolumn{1}{c|}{\\textbf{z(Forward GC)}} & \multicolumn{1}{c|}{\\textbf{z(Backward GC)}} \\\\ \hline\n" \
-    # + "\endhead\n\n" \
-    # + "\hline \multicolumn{5}{|r|}{{Continued on next page}} \\\\ \hline\n" \
-    # + "\endfoot\n\n" \
-    # + "\hline \hline\n" \
-    # + "\endlastfoot\n"
+    + "\\begin{document}\n\\maketitle\clearpage\pagenumbering{gobble}\n\n"
 
 texf.write(preamble)
 
