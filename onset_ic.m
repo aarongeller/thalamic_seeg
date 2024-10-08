@@ -1,21 +1,15 @@
-function onset_ic(modenum)
+function onset_ic(doraw, doz, doioz)
 
-if ~exist('modenum', 'var')
-    modenum = 3;
+if ~exist('doraw', 'var')
+    doraw = 1;
 end
 
-switch modenum
-  case 1
-    doraw = 1;
-    doz = 0;
-  case 2
-    doraw = 0;
+if ~exist('doz', 'var')
     doz = 1;
-  case 3
-    doraw = 1;
-    doz = 1;
-  otherwise
-    disp('Invalid mode number!');
+end
+
+if ~exist('doioz', 'var')
+    doioz = 1;
 end
 
 prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_Visualization/data';
@@ -48,15 +42,19 @@ timepts = size(TF,2);
 srate = 200;
 timevec = (-srate*10:(srate*10 + 1))./srate;
 
-allvals = zeros(elecs, length(allsz), freqs, srate*20 + 1);
-meanvals = zeros(elecs, freqs, srate*20 + 1);
-zvals = zeros(size(meanvals));
-baselinevals = zeros(elecs, length(allsz), freqs, srate*10);
-baselinemeans = zeros(elecs, freqs, srate*10);
+allvals = nan(elecs, length(allsz), freqs, srate*20 + 1);
+meanvals = nan(elecs, freqs, srate*20 + 1);
+zvals = nan(size(meanvals));
+iozzvals = nan(size(meanvals));
+noniozzvals = nan(size(meanvals));
+baselinevals = nan(elecs, length(allsz), freqs, srate*10);
+baselinemeans = nan(elecs, freqs, srate*10);
 zscore_clim = [-3 3];
 
 skipthese = {'SpO2' 'EtCO2' 'Pulse' 'CO2Wave' '$RPT11' '$RPT12' 'EKG1' ...
              'C451' 'C461' 'Annotations'};
+
+ioz = {'RAH1', 'RAH2', 'RAH3', 'RPH1', 'RPH2', 'RPH3'};
 
 for i=1:length(allsz)
     % for every sz
@@ -73,11 +71,29 @@ for i=1:length(allsz)
     end
 end
 
+badinds = get_bad_inds(RowNames, skipthese);
+goodinds = setdiff(1:elecs, badinds);
+
+iozinds = get_bad_inds(RowNames, ioz);
+noniozinds = setdiff(1:elecs, iozinds);
+
 for i=1:elecs
-    meanvals(i,:,:) = squeeze(mean(allvals(i,:,:,:)));
-    baselinemeans(i,:,:) = squeeze(mean(baselinevals(i,:,:,:)));
-    zvals(i,:,:) = do_zscore(squeeze(meanvals(i,:,:)), squeeze(baselinemeans(i,:,:)));
+    if length(find(badinds==i))>0
+        continue
+    else
+        meanvals(i,:,:) = squeeze(mean(allvals(i,:,:,:), "omitnan"));
+        baselinemeans(i,:,:) = squeeze(mean(baselinevals(i,:,:,:), "omitnan"));
+        zvals(i,:,:) = do_zscore(squeeze(meanvals(i,:,:)), squeeze(baselinemeans(i,:,:)));
+        if length(find(iozinds==i))>0
+            iozzvals(i,:,:) = zvals(i,:,:);
+        else
+            noniozzvals(i,:,:) = zvals(i,:,:);
+        end
+    end
 end
+
+iozmeanvals = meanvals(iozinds,:,:);
+noniozmeanvals = meanvals(noniozinds,:,:);
 
 figsdir = 'analyses/UCHGG/figs/IC_mean_tfs';
 if ~exist(figsdir, 'dir')
@@ -117,9 +133,59 @@ for i=1:length(RowNames)
             print('-dpng', fullfile(figsdir, ['RPI1_' RowNames{i} '_zscore']));
             close(h);
         end
-
     end
 end
+
+if doioz
+    h = figure('visible', 'off');
+    thismat = squeeze(mean(iozmeanvals, "omitnan"));
+    imagesc(thismat); axis xy; clim([0 1]);
+    colorbar;
+    xticklabels(timevec(501:500:end));
+    yticklabels(Freqs(5:5:end));
+    xlabel('Time (s)');
+    ylabel('Frequency (Hz)');
+    title(['RPI1-IOZ mean IC']);
+    print('-dpng', fullfile(figsdir, ['RPI1_ioz']));
+    close(h);
+
+    h = figure('visible', 'off');
+    thismat = squeeze(mean(iozzvals, "omitnan"));
+    imagesc(thismat); axis xy; clim([-3 3]);
+    colorbar;
+    xticklabels(timevec(501:500:end));
+    yticklabels(Freqs(5:5:end));
+    xlabel('Time (s)');
+    ylabel('Frequency (Hz)');
+    title(['RPI1-IOZ mean z(IC)']);
+    print('-dpng', fullfile(figsdir, ['RPI1_ioz_zscore']));
+    close(h);
+
+    h = figure('visible', 'off');
+    thismat = squeeze(mean(noniozmeanvals, "omitnan"));
+    imagesc(thismat); axis xy; clim([0 1]);
+    colorbar;
+    xticklabels(timevec(501:500:end));
+    yticklabels(Freqs(5:5:end));
+    xlabel('Time (s)');
+    ylabel('Frequency (Hz)');
+    title(['RPI1-nonIOZ mean IC']);
+    print('-dpng', fullfile(figsdir, ['RPI1_nonioz']));
+    close(h);
+
+    h = figure('visible', 'off');
+    thismat = squeeze(mean(noniozzvals, "omitnan"));
+    imagesc(thismat); axis xy; clim([-3 3]);
+    colorbar;
+    xticklabels(timevec(501:500:end));
+    yticklabels(Freqs(5:5:end));
+    xlabel('Time (s)');
+    ylabel('Frequency (Hz)');
+    title(['RPI1-nonIOZ mean z(IC)']);
+    print('-dpng', fullfile(figsdir, ['RPI1_nonioz_zscore']));
+    close(h);
+end
+
 
 function zmat = do_zscore(valmat, blmat)
 zmat = zeros(size(valmat));
@@ -130,3 +196,10 @@ for i=1:size(zmat,1)
         zmat(i,:) = (valmat(i,:) - m)./s;
     end
 end
+
+function b = get_bad_inds(r, skipthese)
+temp = [];
+for i=1:length(skipthese)
+    temp(end+1,:) = strcmp(r, skipthese{i});
+end
+b = find(any(temp));
