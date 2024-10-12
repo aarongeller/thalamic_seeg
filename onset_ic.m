@@ -1,4 +1,4 @@
-function onset_ic(doraw, doz, doioz, onsetmode)
+function onset_ic(subj, doraw, doz, doioz, onsetmode)
 
 if ~exist('doraw', 'var')
     doraw = 1;
@@ -16,68 +16,88 @@ if ~exist('onsetmode', 'var')
     onsetmode = 1;
 end
 
-prefix = '/Users/aaron/Documents/brainstorm_db/IEEG_Visualization/data';
-onset_sz1 =  'UCHGG/UCHGG_25_08_23__21_20_17/timefreq_connect1_cohere_241010_1821.mat';
-onset_sz2 =  'UCHGG/UCHGG_26_08_23__10_48_33/timefreq_connect1_cohere_241010_1826.mat';
-onset_sz3 =  'UCHGG/UCHGG_26_08_23__14_25_10/timefreq_connect1_cohere_241010_1831.mat';
-onset_sz4 =  'UCHGG/UCHGG_26_08_23__17_39_05/timefreq_connect1_cohere_241010_1836.mat';
-onset_sz5 =  'UCHGG/UCHGG_27_08_23__10_54_38/timefreq_connect1_cohere_241010_1839.mat';
-onset_sz6 =  'UCHGG/UCHGG_27_08_23__16_28_57/timefreq_connect1_cohere_241010_1843.mat';
-onset_sz7 =  'UCHGG/UCHGG_28_08_23__03_25_43/timefreq_connect1_cohere_241010_1845.mat';
-onset_sz8 =  'UCHGG/UCHGG_28_08_23__10_53_25/timefreq_connect1_cohere_241010_1848.mat';
-onset_sz9 =  'UCHGG/UCHGG_28_08_23__14_43_42/timefreq_connect1_cohere_241010_1851.mat';
-onset_sz10 =  'UCHGG/UCHGG_28_08_23__16_28_59/timefreq_connect1_cohere_241010_1854.mat';
-onset_sz11 =  'UCHGG/UCHGG_28_08_23__16_51_19/timefreq_connect1_cohere_241010_2007.mat';
-onset_sz12 =  'UCHGG/UCHGG_28_08_23__20_01_37/timefreq_connect1_cohere_241010_1900.mat';
-onset_sz13 =  'UCHGG/UCHGG_29_08_23__05_42_28/timefreq_connect1_cohere_241010_1903.mat';
-onset_sz14 =  'UCHGG/UCHGG_29_08_23__11_03_18/timefreq_connect1_cohere_241010_1905.mat';
-onset_sz15 =  'UCHGG/UCHGG_29_08_23__16_01_13/timefreq_connect1_cohere_241010_1908.mat';
-onset_sz16 =  'UCHGG/UCHGG_29_08_23__19_22_41/timefreq_connect1_cohere_241010_1911.mat';
+prefix = fullfile('/Users/aaron/Documents/brainstorm_db/IEEG_Visualization/data', ...
+                  subj, [subj '_']);
 
-onset_times = [83 83.9 86.4 82.5 69.6 69.6 83.8 69.9 93.6 83.7 83.7 ...
-               72 68.4 83.1 70.3 76.5];
+switch subj
+  case 'UCHGG'
+    onset_sz = {'25_08_23__21_20_17/timefreq_connect1_cohere_241010_1821.mat' ...
+                '26_08_23__10_48_33/timefreq_connect1_cohere_241010_1826.mat' ...
+                '26_08_23__14_25_10/timefreq_connect1_cohere_241010_1831.mat' ...
+                '26_08_23__17_39_05/timefreq_connect1_cohere_241010_1836.mat' ...
+                '27_08_23__10_54_38/timefreq_connect1_cohere_241010_1839.mat' ...
+                '27_08_23__16_28_57/timefreq_connect1_cohere_241010_1843.mat' ...
+                '28_08_23__03_25_43/timefreq_connect1_cohere_241010_1845.mat' ...
+                '28_08_23__10_53_25/timefreq_connect1_cohere_241010_1848.mat' ...
+                '28_08_23__14_43_42/timefreq_connect1_cohere_241010_1851.mat' ...
+                '28_08_23__16_28_59/timefreq_connect1_cohere_241010_1854.mat' ...
+                '28_08_23__16_51_19/timefreq_connect1_cohere_241010_2007.mat' ...
+                '28_08_23__20_01_37/timefreq_connect1_cohere_241010_1900.mat' ...
+                '29_08_23__05_42_28/timefreq_connect1_cohere_241010_1903.mat' ...
+                '29_08_23__11_03_18/timefreq_connect1_cohere_241010_1905.mat' ...
+                '29_08_23__16_01_13/timefreq_connect1_cohere_241010_1908.mat' ...
+                '29_08_23__19_22_41/timefreq_connect1_cohere_241010_1911.mat'};
 
-% offset
-offset_sz1 =  'UCHGG/UCHGG_25_08_23__21_20_17/timefreq_connect1_cohere_241010_1820.mat';
-offset_sz2 =  'UCHGG/UCHGG_26_08_23__10_48_33/timefreq_connect1_cohere_241010_1827.mat';
-offset_sz3 =  'UCHGG/UCHGG_26_08_23__14_25_10/timefreq_connect1_cohere_241010_1832.mat';
-offset_sz4 =  'UCHGG/UCHGG_26_08_23__17_39_05/timefreq_connect1_cohere_241010_1837.mat';
-offset_sz5 =  'UCHGG/UCHGG_27_08_23__10_54_38/timefreq_connect1_cohere_241010_1840.mat';
-offset_sz6 =  'UCHGG/UCHGG_27_08_23__16_28_57/timefreq_connect1_cohere_241010_1844.mat';
-offset_sz7 =  'UCHGG/UCHGG_28_08_23__03_25_43/timefreq_connect1_cohere_241010_1846.mat';
-offset_sz8 =  'UCHGG/UCHGG_28_08_23__10_53_25/timefreq_connect1_cohere_241010_1849.mat';
-offset_sz9 =  'UCHGG/UCHGG_28_08_23__14_43_42/timefreq_connect1_cohere_241010_1852.mat';
-offset_sz10 =  'UCHGG/UCHGG_28_08_23__16_28_59/timefreq_connect1_cohere_241010_1855.mat';
-offset_sz11 =  'UCHGG/UCHGG_28_08_23__16_51_19/timefreq_connect1_cohere_241010_2008.mat';
-offset_sz12 =  'UCHGG/UCHGG_28_08_23__20_01_37/timefreq_connect1_cohere_241010_1901.mat';
-offset_sz13 =  'UCHGG/UCHGG_29_08_23__05_42_28/timefreq_connect1_cohere_241010_1904.mat';
-offset_sz14 =  'UCHGG/UCHGG_29_08_23__11_03_18/timefreq_connect1_cohere_241010_1906.mat';
-offset_sz15 =  'UCHGG/UCHGG_29_08_23__16_01_13/timefreq_connect1_cohere_241010_1909.mat';
-offset_sz16 =  'UCHGG/UCHGG_29_08_23__19_22_41/timefreq_connect1_cohere_241010_1912.mat';
+    onset_times = [83 83.9 86.4 82.5 69.6 69.6 83.8 69.9 93.6 83.7 83.7 ...
+                   72 68.4 83.1 70.3 76.5];
 
-offset_times = [180 190.2 110.8 108 180 171 214.8 151.6 383 ...
-                112 130 130 123.9 185.1 175.2 194.9]; % first 130 probably not right
+    offset_sz = {'25_08_23__21_20_17/timefreq_connect1_cohere_241010_1820.mat' ...
+                 '26_08_23__10_48_33/timefreq_connect1_cohere_241010_1827.mat' ...
+                 '26_08_23__14_25_10/timefreq_connect1_cohere_241010_1832.mat' ...
+                 '26_08_23__17_39_05/timefreq_connect1_cohere_241010_1837.mat' ...
+                 '27_08_23__10_54_38/timefreq_connect1_cohere_241010_1840.mat' ...
+                 '27_08_23__16_28_57/timefreq_connect1_cohere_241010_1844.mat' ...
+                 '28_08_23__03_25_43/timefreq_connect1_cohere_241010_1846.mat' ...
+                 '28_08_23__10_53_25/timefreq_connect1_cohere_241010_1849.mat' ...
+                 '28_08_23__14_43_42/timefreq_connect1_cohere_241010_1852.mat' ...
+                 '28_08_23__16_28_59/timefreq_connect1_cohere_241010_1855.mat' ...
+                 '28_08_23__16_51_19/timefreq_connect1_cohere_241010_2008.mat' ...
+                 '28_08_23__20_01_37/timefreq_connect1_cohere_241010_1901.mat' ...
+                 '29_08_23__05_42_28/timefreq_connect1_cohere_241010_1904.mat' ...
+                 '29_08_23__11_03_18/timefreq_connect1_cohere_241010_1906.mat' ...
+                 '29_08_23__16_01_13/timefreq_connect1_cohere_241010_1909.mat' ...
+                 '29_08_23__19_22_41/timefreq_connect1_cohere_241010_1912.mat'};
 
-if onsetmode
-    allsz = {onset_sz1 onset_sz2 onset_sz3 onset_sz4 onset_sz5 onset_sz6 onset_sz7 ...
-             onset_sz8 onset_sz9 onset_sz10 onset_sz11 onset_sz12 onset_sz13 ...
-             onset_sz14 onset_sz15 onset_sz16};
-    t = onset_times;
-    figsdir = 'analyses/UCHGG/figs/IC_mean_tfs_onset';
-else
-    allsz = {offset_sz1 offset_sz2 offset_sz3 offset_sz4 offset_sz5 offset_sz6 offset_sz7 ...
-             offset_sz8 offset_sz9 offset_sz10 offset_sz11 offset_sz12 offset_sz13 ...
-             offset_sz14 offset_sz15 offset_sz16};
-    t = offset_times;
-    figsdir = 'analyses/UCHGG/figs/IC_mean_tfs_offset';
+    offset_times = [180 190.2 110.8 108 180 171 214.8 151.6 383 ...
+                    112 130 130 123.9 185.1 175.2 194.9]; % first 130 probably not right
+
+    ioz = {'RAH1', 'RAH2', 'RAH3', 'RPH1', 'RPH2', 'RPH3'};
+    seedstr = 'RPI1';
+  case 'UCHVG'
+    onset_sz = {'25_07_23__03_33_09/timefreq_connect1_cohere_241011_1940.mat' ...
+                '25_07_23__05_04_19/timefreq_connect1_cohere_241011_1938.mat' ...
+                '25_07_23__06_19_48/timefreq_connect1_cohere_241011_2030.mat'};
+
+    onset_times = [83.4 82.3 82.6];
+
+    offset_sz = {'25_07_23__03_33_09/timefreq_connect1_cohere_241011_1941.mat' ...
+                 '25_07_23__05_04_19/timefreq_connect1_cohere_241011_1939.mat' ...
+                 '25_07_23__06_19_48/timefreq_connect1_cohere_241011_2031.mat'};
+
+    offset_times = [171 179 172.9];
+
+    ioz = {'LAH1', 'LAH2', 'LAH3', 'LAH4'};
+    seedstr = 'LANT1';
 end
 
-load(fullfile(prefix, allsz{1}));
+if onsetmode
+    allsz = onset_sz;
+    t = onset_times;
+    figsubdir = 'IC_mean_tfs_onset';
+else
+    allsz = offset_sz;
+    t = offset_times;
+    figsubdir = 'IC_mean_tfs_offset';
+end
+
+figsdir = fullfile('analyses', subj, 'figs', figsubdir);
+
+load([prefix allsz{1}]);
 elecs = size(TF,1);
 freqs = size(TF,3);
 timepts = size(TF,2);
 
-srate = 200;
+srate = 250;
 timevec = (-srate*10:(srate*10 + 1))./srate;
 
 allvals = nan(elecs, length(allsz), freqs, srate*20 + 1);
@@ -92,11 +112,9 @@ zscore_clim = [-3 3];
 skipthese = {'SpO2' 'EtCO2' 'Pulse' 'CO2Wave' '$RPT11' '$RPT12' 'EKG1' ...
              'C451' 'C461' 'Annotations'};
 
-ioz = {'RAH1', 'RAH2', 'RAH3', 'RPH1', 'RPH2', 'RPH3'};
-
 for i=1:length(allsz)
     % for every sz
-    load(fullfile(prefix, allsz{i}));
+    load([prefix allsz{i}]);
     
     % select 20 sec around onset time
     onset_sample = min(find(Time >= t(i)));
@@ -151,8 +169,8 @@ for i=1:length(RowNames)
             yticklabels(Freqs(5:5:end));
             xlabel('Time (s)');
             ylabel('Frequency (Hz)');
-            title(['RPI1-' RowNames{i} ' IC']);
-            print('-dpng', fullfile(figsdir, ['RPI1_' RowNames{i}]));
+            title([seedstr '-' RowNames{i} ' IC']);
+            print('-dpng', fullfile(figsdir, [seedstr '_' RowNames{i}]));
             close(h);
         end
         
@@ -166,8 +184,8 @@ for i=1:length(RowNames)
             yticklabels(Freqs(5:5:end));
             xlabel('Time (s)');
             ylabel('Frequency (Hz)');
-            title(['RPI1-' RowNames{i} ' z(IC)']);
-            print('-dpng', fullfile(figsdir, ['RPI1_' RowNames{i} '_zscore']));
+            title([seedstr '-' RowNames{i} ' z(IC)']);
+            print('-dpng', fullfile(figsdir, [seedstr '_' RowNames{i} '_zscore']));
             close(h);
         end
     end
@@ -182,8 +200,8 @@ if doioz
     yticklabels(Freqs(5:5:end));
     xlabel('Time (s)');
     ylabel('Frequency (Hz)');
-    title(['RPI1-IOZ mean IC']);
-    print('-dpng', fullfile(figsdir, ['RPI1_ioz']));
+    title([seedstr '-IOZ mean IC']);
+    print('-dpng', fullfile(figsdir, [seedstr '_ioz']));
     close(h);
 
     h = figure('visible', 'off');
@@ -194,8 +212,8 @@ if doioz
     yticklabels(Freqs(5:5:end));
     xlabel('Time (s)');
     ylabel('Frequency (Hz)');
-    title(['RPI1-IOZ mean z(IC)']);
-    print('-dpng', fullfile(figsdir, ['RPI1_ioz_zscore']));
+    title([seedstr '-IOZ mean z(IC)']);
+    print('-dpng', fullfile(figsdir, [seedstr '_ioz_zscore']));
     close(h);
 
     h = figure('visible', 'off');
@@ -206,8 +224,8 @@ if doioz
     yticklabels(Freqs(5:5:end));
     xlabel('Time (s)');
     ylabel('Frequency (Hz)');
-    title(['RPI1-nonIOZ mean IC']);
-    print('-dpng', fullfile(figsdir, ['RPI1_nonioz']));
+    title([seedstr '-nonIOZ mean IC']);
+    print('-dpng', fullfile(figsdir, [seedstr '_nonioz']));
     close(h);
 
     h = figure('visible', 'off');
@@ -218,11 +236,12 @@ if doioz
     yticklabels(Freqs(5:5:end));
     xlabel('Time (s)');
     ylabel('Frequency (Hz)');
-    title(['RPI1-nonIOZ mean z(IC)']);
-    print('-dpng', fullfile(figsdir, ['RPI1_nonioz_zscore']));
+    title([seedstr '-nonIOZ mean z(IC)']);
+    print('-dpng', fullfile(figsdir, [seedstr '_nonioz_zscore']));
     close(h);
 end
 
+system(['python make_ic_pdf.py ' subj ' ' figsubdir]);
 
 function zmat = do_zscore(valmat, blmat)
 zmat = zeros(size(valmat));
