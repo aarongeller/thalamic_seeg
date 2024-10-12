@@ -30,14 +30,16 @@ total_pairs = int(len(imgfiles)/2)
 
 for i,f in enumerate(imgfiles):
     fparts = os.path.basename(f).split('_')
+    thisline = ""
     if len(fparts)>2:
         continue
-    else:        
-        seedstr = fparts[0]
-        target = fparts[1].split('.')[0]
-        label = seedstr + " $\\leftrightarrow$ " + target
-        fparts2 = f.split('.')
-        thisline = "\\section{" + label + "}\n\\begin{tabular}{cc}\n" \
+    if fparts[1].split(".")[0]=="ioz":
+        thisline += "\pagebreak\n"
+    seedstr = fparts[0]
+    target = fparts[1].split('.')[0]
+    label = seedstr + " $\\leftrightarrow$ " + target
+    fparts2 = f.split('.')
+    thisline += "\\section{" + label + "}\n\\begin{tabular}{cc}\n" \
         + "\\includegraphics[width=" \
         + str(imgsize) + "\\textwidth]{" + fparts2[0] + "} &\n" \
         + "\\includegraphics[width=" \
