@@ -150,16 +150,16 @@ for i=1:elecs
         meanvals(i,:,:) = squeeze(mean(allvals(i,:,:,:), "omitnan"));
         baselinemeans(i,:,:) = squeeze(mean(baselinevals(i,:,:,:), "omitnan"));
         zvals(i,:,:) = do_zscore(squeeze(meanvals(i,:,:)), squeeze(baselinemeans(i,:,:)));
-        if length(find(iozinds==i))>0
-            iozzvals(i,:,:) = zvals(i,:,:);
-        else
-            noniozzvals(i,:,:) = zvals(i,:,:);
-        end
     end
 end
 
 iozmeanvals = meanvals(iozinds,:,:);
+iozbaselinemeans = baselinemeans(iozinds,:,:);
+iozzscore = do_zscore(squeeze(mean(iozmeanvals)), squeeze(mean(iozbaselinemeans)));
 noniozmeanvals = meanvals(noniozinds,:,:);
+noniozbaselinemeans = baselinemeans(noniozinds,:,:);
+noniozzscore = do_zscore(squeeze(mean(noniozmeanvals, "omitnan")), ...
+                         squeeze(mean(noniozbaselinemeans, "omitnan")));
 
 if ~exist(figsdir, 'dir')
     mkdir(figsdir);
@@ -215,8 +215,7 @@ if doioz
     close(h);
 
     h = figure('visible', 'off');
-    thismat = squeeze(mean(iozzvals, "omitnan"));
-    imagesc(thismat); axis xy; clim([-3 3]);
+    imagesc(iozzscore); axis xy; clim([-3 3]);
     colorbar;
     xticklabels(timevec(501:500:end));
     yticklabels(Freqs(5:5:end));
@@ -239,8 +238,7 @@ if doioz
     close(h);
 
     h = figure('visible', 'off');
-    thismat = squeeze(mean(noniozzvals, "omitnan"));
-    imagesc(thismat); axis xy; clim([-3 3]);
+    imagesc(noniozzscore); axis xy; clim([-3 3]);
     colorbar;
     xticklabels(timevec(501:500:end));
     yticklabels(Freqs(5:5:end));
