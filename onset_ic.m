@@ -78,6 +78,13 @@ switch subj
 
     ioz = {'LAH1', 'LAH2', 'LAH3', 'LAH4'};
     seedstr = 'LANT1';
+  case 'UCHAK'
+    onset_sz_p1 = {'06_04_24__09_39_50/timefreq_connect1_cohere_241012_1018.mat' ...
+               };
+
+    offset_sz_p1 = {'06_04_24__09_39_50/timefreq_connect1_cohere_241012_1019.mat' ...
+                };
+
 end
 
 if onsetmode
@@ -127,10 +134,10 @@ for i=1:length(allsz)
     end
 end
 
-badinds = get_bad_inds(RowNames, skipthese);
+badinds = get_matching_inds(RowNames, skipthese);
 goodinds = setdiff(1:elecs, badinds);
 
-iozinds = get_bad_inds(RowNames, ioz);
+iozinds = get_matching_inds(RowNames, ioz);
 noniozinds = setdiff(1:elecs, iozinds);
 
 for i=1:elecs
@@ -253,7 +260,7 @@ for i=1:size(zmat,1)
     end
 end
 
-function b = get_bad_inds(r, skipthese)
+function b = get_matching_inds(r, skipthese)
 temp = [];
 for i=1:length(skipthese)
     temp(end+1,:) = strcmp(r, skipthese{i});
