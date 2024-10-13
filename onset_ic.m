@@ -1,4 +1,4 @@
-function onset_ic(subj, doraw, doz, doioz, onsetmode)
+function onset_ic(subj, doraw, doz, doioz, onsetmode, srate)
 
 if ~exist('doraw', 'var')
     doraw = 1;
@@ -14,6 +14,10 @@ end
 
 if ~exist('onsetmode', 'var')
     onsetmode = 1;
+end
+
+if ~exist('srate', 'var')
+    srate = 250;
 end
 
 prefix = fullfile('/Users/aaron/Documents/brainstorm_db/IEEG_Visualization/data', ...
@@ -104,7 +108,6 @@ elecs = size(TF,1);
 freqs = size(TF,3);
 timepts = size(TF,2);
 
-srate = 250;
 timevec = (-srate*10:(srate*10 + 1))./srate;
 
 allvals = nan(elecs, length(allsz), freqs, srate*20 + 1);
@@ -260,9 +263,9 @@ for i=1:size(zmat,1)
     end
 end
 
-function b = get_matching_inds(r, skipthese)
+function b = get_matching_inds(vec1, vec2)
 temp = [];
-for i=1:length(skipthese)
-    temp(end+1,:) = strcmp(r, skipthese{i});
+for i=1:length(vec2)
+    temp(end+1,:) = strcmp(vec1, vec2{i});
 end
 b = find(any(temp));
