@@ -1,4 +1,4 @@
-function onset_ic(subj, doraw, doz, doioz, onsetmode, srate)
+function onset_ic(subj, doraw, doz, doioz, onsetmode, srate, halfwindow_s)
 
 if ~exist('doraw', 'var')
     doraw = 1;
@@ -18,6 +18,10 @@ end
 
 if ~exist('srate', 'var')
     srate = 250;
+end
+
+if ~exist('halfwindow_s', 'var')
+    halfwindow_s = 10;
 end
 
 prefix = fullfile('/Users/aaron/Documents/brainstorm_db/IEEG_Visualization/data', ...
@@ -108,15 +112,15 @@ elecs = size(TF,1);
 freqs = size(TF,3);
 timepts = size(TF,2);
 
-timevec = (-srate*10:(srate*10 + 1))./srate;
+timevec = (-srate*halfwindow_s:(srate*halfwindow_s + 1))./srate;
 
-allvals = nan(elecs, length(allsz), freqs, srate*20 + 1);
-meanvals = nan(elecs, freqs, srate*20 + 1);
+allvals = nan(elecs, length(allsz), freqs, srate*2*halfwindow + 1);
+meanvals = nan(elecs, freqs, srate*2*halfwindow + 1);
 zvals = nan(size(meanvals));
 iozzvals = nan(size(meanvals));
 noniozzvals = nan(size(meanvals));
-baselinevals = nan(elecs, length(allsz), freqs, srate*10);
-baselinemeans = nan(elecs, freqs, srate*10);
+baselinevals = nan(elecs, length(allsz), freqs, srate*halfwindow_s);
+baselinemeans = nan(elecs, freqs, srate*halfwindow_s);
 zscore_clim = [-3 3];
 
 skipthese = {'SpO2' 'EtCO2' 'Pulse' 'CO2Wave' '$RPT11' '$RPT12' 'EKG1' ...
@@ -128,12 +132,12 @@ for i=1:length(allsz)
     
     % select 20 sec around onset time
     onset_sample = min(find(Time >= t(i)));
-    selected_interval = TF(:, onset_sample-srate*10:onset_sample+srate*10, :);
+    selected_interval = TF(:, onset_sample-srate*halfwindow_s:onset_sample+srate*halfwindow_s, :);
 
     % for every elec, get tfs centered at onset
     for j=1:elecs
         allvals(j,i,:,:) = squeeze(selected_interval(j,:,:))';
-        baselinevals(j,i,:,:) = squeeze(selected_interval(j,1:srate*10,:))';
+        baselinevals(j,i,:,:) = squeeze(selected_interval(j,1:srate*halfwindow_s,:))';
     end
 end
 
