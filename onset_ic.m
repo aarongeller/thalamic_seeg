@@ -254,20 +254,3 @@ if doioz
 end
 
 system(['python make_ic_pdf.py ' subj ' ' figsubdir]);
-
-function zmat = do_zscore(valmat, blmat)
-zmat = zeros(size(valmat));
-for i=1:size(zmat,1)
-    s = std(blmat(i,:));
-    m = mean(blmat(i,:));
-    if s>10^-6
-        zmat(i,:) = (valmat(i,:) - m)./s;
-    end
-end
-
-function b = get_matching_inds(vec1, vec2)
-temp = [];
-for i=1:length(vec2)
-    temp(end+1,:) = strcmp(vec1, vec2{i});
-end
-b = find(any(temp));
