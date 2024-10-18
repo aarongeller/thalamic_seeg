@@ -10,7 +10,7 @@ figspath = os.path.join("analyses", subjname, "figs", topdir)
 figspath_forward = os.path.join(figspath, "forward")
 figspath_backward = os.path.join(figspath, "backward")
 
-texfname = os.path.join(subjname, subjname + "_" + topdir + ".tex")
+texfname = os.path.join("analyses", subjname, subjname + "_" + topdir + ".tex")
 texf = open(texfname, 'w')
 
 subjname_parts = subjname.split("_")
