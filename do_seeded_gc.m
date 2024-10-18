@@ -1,5 +1,9 @@
-function gc_info = do_seeded_gc(eegdata, srate, channelinfo, ...
-                                seedstr, startsample, endsample)
+function gc_info = do_seeded_gc(eegdata, srate, channelinfo, seedstr, startsample, ...
+                                endsample, baseline_s)
+
+if ~exist('baseline_s', 'var')
+    baseline_s = 10;
+end
 
 tic;
 
@@ -29,12 +33,21 @@ else
 
     [Fxy, Fyx] = mov_bi_ga_seeded(eegdata', seednum, startsample, endsample, windowlength, ...
                                   order, srate, freqs);
+
+    [Fxy_baseline, Fyx_baseline] = mov_bi_ga_seeded(eegdata', seednum, 1, round(srate*baseline_s), ...
+                                                    windowlength, order, srate, freqs);
 end
 
+timepts = size(Fxy,3);
+timevec = (startsample:(startsample+timepts-1))./srate;
+
 gc_info = [];
+gc_info.timevec = timevec;
 gc_info.eegdata = eegdata;
 gc_info.Fxy = Fxy;
 gc_info.Fyx = Fyx;
+gc_info.Fxy_baseline = Fxy_baseline;
+gc_info.Fyx_baseline = Fyx_baseline;
 gc_info.srate = srate;
 gc_info.channel_names = channel_names;
 gc_info.seedstr = seedstr;
