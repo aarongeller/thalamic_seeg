@@ -9,6 +9,7 @@ topdir = sys.argv[2]
 figspath = os.path.join("analyses", subjname, "figs", topdir)
 figspath_forward = os.path.join(figspath, "forward")
 figspath_backward = os.path.join(figspath, "backward")
+figspath_diff = os.path.join(figspath, "diff")
 
 texfname = os.path.join("analyses", subjname, subjname + "_" + topdir + ".tex")
 texf = open(texfname, 'w')
@@ -18,7 +19,8 @@ if len(subjname_parts) > 1:
     subjname = "\_".join(subjname_parts)
 
 title = subjname + " Granger Figures"
-preamble = "\\documentclass[12pt]{article}\n\\usepackage{graphicx, hyperref, longtable, pdflscape}\n" \
+preamble = "\\let\\mypdfximage\\pdfximage\n\\def\\pdfximage{\\immediate\\mypdfximage}\n" \
+    + "\\documentclass[12pt]{article}\n\\usepackage{graphicx, hyperref, longtable, pdflscape}\n" \
     + "\\hypersetup{colorlinks=true,linkcolor=blue,pdftitle={" + title + "}}\n" \
     + "\\renewcommand{\\familydefault}{\\sfdefault}\n\\title{" + title + "}\n" \
     + "\\begin{document}\n\\maketitle\clearpage\pagenumbering{gobble}\n\n" \
@@ -43,18 +45,23 @@ imgfiles_forward.sort()
 imgfiles_backward = glob(os.path.join(figspath_backward, '*.png'))
 imgfiles_backward.sort()
 
+imgfiles_diff = glob(os.path.join(figspath_diff, '*.png'))
+
 imgsize = 0.37
 total_pairs = int(len(imgfiles_forward)/2)
+
+imgsize2 = 0.5
 
 for i,f in enumerate(imgfiles_forward):
     fparts = os.path.basename(f).split('_')
     if fparts[0]=="z":
         break
-    else:
-        seedstr = fparts[1]
-        target = fparts[2][:-4]
-        label = seedstr + " $\\leftrightarrow$ " + target
-        thisline = "\\begin{tabular}{c}\n" + label + " \n\end{tabular}\n&\n" \
+    elif fparts[0]=="200":
+        texf.write("\pagebreak\n")
+    seedstr = fparts[1]
+    target = fparts[2][:-4]
+    label = seedstr + " $\\leftrightarrow$ " + target
+    thisline = "\\begin{tabular}{c}\n" + label + " \n\end{tabular}\n&\n" \
         + "\\begin{tabular}{c}\n\\includegraphics[width=" \
         + str(imgsize) + "\\textwidth]{" + f + "}\n\end{tabular}\n&\n" \
         + "\\begin{tabular}{c}\n\\includegraphics[width=" \
@@ -65,9 +72,16 @@ for i,f in enumerate(imgfiles_forward):
         + str(imgsize) + "\\textwidth]{" + imgfiles_backward[i+total_pairs] + "}\n\end{tabular}\n\\\\\n"
     texf.write(thisline)
 
-postamble = "\\end{longtable}\n\\end{landscape}\n\n\\end{document}\n"
+postamble = "\\end{longtable}\n\\end{landscape}\n\n"
 texf.write(postamble)
 
+thisline = "\pagebreak\n\\begin{tabular}{cc}\\\\\n\includegraphics[width=" + str(imgsize2) \
+    + "\\textwidth]{analyses/UCHGG/figs/granger\_onset/diff/zdiff\_204\_RPI1\_IOZ} & \n" \
+    + "\\includegraphics[width=" + str(imgsize2) \
+    + "\\textwidth]{analyses/UCHGG/figs/granger\_onset/diff/zdiff\_205\_RPI1\_nonIOZ}\\\\\n\\end{tabular}\n\n"
+texf.write(thisline)
+
+texf.write("\\end{document}\n")
 texf.close()
 
 os.system("pdflatex -output-directory " + os.path.join("analyses", subjname) + " " + texfname)
