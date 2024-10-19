@@ -14,11 +14,11 @@ if ~exist('overwrite_alldata', 'var')
 end
 
 if ~exist('tfsclim', 'var')
-    tfsclim = [0 3];
+    tfsclim = [0 1];
 end
 
 if ~exist('zclim', 'var')
-    zclim = [-15 15];
+    zclim = [-10 10];
 end
 
 if ~exist('srate', 'var')
