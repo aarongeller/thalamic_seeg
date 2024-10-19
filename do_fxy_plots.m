@@ -14,6 +14,11 @@ if ~exist(backwarddir, 'dir')
     mkdir(backwarddir);
 end
 
+diffdir = fullfile(figsdir, 'diff');
+if ~exist(diffdir, 'dir')
+    mkdir(diffdir);
+end
+
 if ~exist('sz_onset_s', 'var')
     sz_onset_s = nan;
 end
@@ -144,6 +149,18 @@ znonioz_figpath = fullfile(forwarddir, znonioz_figname);
 znonioz_titstr = ['z(' gc_info{1}.seedstr ' -> nonIOZ)'];
 do_tfs_fig(iozzscore_Fxy, zclim, gc_info{1}.freqs, ...
     gc_info{1}.srate, znonioz_titstr, znonioz_figpath, timevec);
+
+zdiffioz_figname = ['zdiff_204_' gc_info{1}.seedstr '_IOZ.png'];
+zdiffioz_figpath = fullfile(diffdir, zdiffioz_figname);
+zdiffioz_titstr = ['z(IOZ -> ' gc_info{1}.seedstr ') - z(' gc_info{1}.seedstr ' -> IOZ)'];
+do_tfs_fig(iozzscore_Fxy - iozzscore_Fyx, zclim, gc_info{1}.freqs, ...
+           gc_info{1}.srate, zdiffioz_titstr, zdiffioz_figpath, timevec);
+
+zdiffnonioz_figname = ['zdiff_205_' gc_info{1}.seedstr '_nonIOZ.png'];
+zdiffnonioz_figpath = fullfile(diffdir, zdiffnonioz_figname);
+zdiffnonioz_titstr = ['z(nonIOZ -> ' gc_info{1}.seedstr ') - z(' gc_info{1}.seedstr ' -> nonIOZ)'];
+do_tfs_fig(noniozzscore_Fxy - noniozzscore_Fyx, zclim, gc_info{1}.freqs, ...
+           gc_info{1}.srate, zdiffnonioz_titstr, zdiffnonioz_figpath, timevec);
 
 % ppm = ParforProgressbar(total, 'parpool', {'local', 4}, ...
 %                         'showWorkerProgress', true, 'title', ...
