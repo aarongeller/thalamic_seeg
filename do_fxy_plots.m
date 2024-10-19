@@ -24,13 +24,11 @@ end
 
 tic;
 
-p = gcp;
+% p = gcp;
 % total = size(gc_info.Fxy,1);
 % ppm = ParforProgressbar(total, 'parpool', {'local', 4}, ...
 %                         'showWorkerProgress', true, 'title', ...
 %                         'Plotting Forward Connectivity');
-
-% for every electrode
 
 elecs = size(gc_info{1}.Fxy, 1);
 freqs = size(gc_info{1}.Fxy, 2);
@@ -54,7 +52,6 @@ iozzvals_Fxy = nan(size(meanvals_Fxy));
 iozzvals_Fyx = nan(size(meanvals_Fxy));
 noniozzvals_Fxy = nan(size(meanvals_Fxy));
 noniozzvals_Fyx = nan(size(meanvals_Fxy));
-
 
 for i=1:length(gc_info) % for every file,
     for j=1:elecs
