@@ -94,9 +94,9 @@ switch subj
     ioz = {'RAH1', 'RAH2', 'RAH3', 'RPH1', 'RPH2', 'RPH3'};
     seedstr = 'RPI1';
   case 'UCHVG'
-    onset_sz = {'25_07_23__03_33_09/timefreq_connect1_cohere_241011_1940.mat' ...
-                '25_07_23__05_04_19/timefreq_connect1_cohere_241011_1938.mat' ...
-                '25_07_23__06_19_48/timefreq_connect1_cohere_241011_2030.mat'};
+    onset_sz = {'25_07_23__03_33_09/timefreq_connect1_cohere_241021_1530.mat' ...
+                '25_07_23__05_04_19/timefreq_connect1_cohere_241021_1537.mat' ...
+                '25_07_23__06_19_48/timefreq_connect1_cohere_241021_1540.mat'};
 
     onset_times = [83.4 82.3 82.6];
 
@@ -106,7 +106,7 @@ switch subj
 
     offset_times = [171 179 172.9];
 
-    ioz = {'LAH1', 'LAH2', 'LAH3', 'LAH4'};
+    ioz = {'LAH1', 'LAH2', 'LAH3', 'LAH4', 'LPH1', 'LPH2', 'LPH3', 'LPH4'};
     seedstr = 'LANT1';
   case 'UCHAK'
     onset_sz_p1 = {'06_04_24__09_39_50/timefreq_connect1_cohere_241012_1018.mat' ...
