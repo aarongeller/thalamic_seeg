@@ -57,9 +57,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        offset_s = 60;
-        extra_offset = 0;
-        %eegfile = 'data_block001_04_notch.mat';
         channeldirpart = '25_08_23__21_20_17';
         eegfiles = { '25_08_23__21_20_17/data_block001.mat' ...
                      '26_08_23__10_48_33/data_block001.mat' ...
@@ -91,11 +88,19 @@ switch subj
         eegfile = 'data_block001_resample_notch.mat';
     end
   case 'UCHVG'
-    prefix = fullfile(datapath, 'UCHVG/UCHVG_25_07_23__03_33_09');
+    prefix = fullfile(datapath, 'UCHVG/UCHVG_');
     seedstr = 'LANT1';
-    sz_onset_s = 83.4;
+    sz_onset_s = [83.4 82.3 82.6];
     sz_offset_s = 171;
     switch cond
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '25_07_23__03_33_09';
+        eegfiles = { '25_07_23__03_33_09/data_block001.mat' ...
+                     '25_07_23__05_04_19/data_block001.mat' ...
+                     '25_07_23__06_19_48/data_block001.mat' ...
+                   };
+        ioz = {'LAH1', 'LAH2', 'LAH3', 'LAH4', 'LPH1', 'LPH2', 'LPH3', 'LPH4'};
       case 'finderror'
         duration_s = 5;
         offset_s = 152; % was getting error if including second 155
@@ -123,7 +128,8 @@ switch subj
 end
 
 outputdir = ['granger_' cond];
-figsdir = fullfile('analyses', subj, 'figs', outputdir);
+analdir = fullfile('analyses', subj);
+figsdir = fullfile(analdir, 'figs', outputdir);
 
 load(fullfile([prefix channeldirpart], 'channel.mat'));
 
@@ -142,12 +148,13 @@ if overwrite_data
     if ~exist(datapath, 'file')
         gc_info.files = {};
         gc_info.data = {};
+
+        if ~exist(analdir, 'dir')
+            mkdir(analdir);
+        end
     else
         load(datapath);
         eval(['gc_info = ' varname ';']);
-    end
-    if ~exist(subj, 'dir')
-        mkdir(subj);
     end
     for i=1:length(eegfiles)
         if any(strcmp(eegfiles{i}, gc_info.files)) && ~overwrite_alldata
