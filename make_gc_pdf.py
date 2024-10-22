@@ -56,7 +56,7 @@ for i,f in enumerate(imgfiles_forward):
     fparts = os.path.basename(f).split('_')
     if fparts[0]=="z":
         break
-    elif fparts[0]=="200":
+    elif fparts[0]=="400":
         texf.write("\pagebreak\n")
     seedstr = fparts[1]
     target = fparts[2][:-4]
