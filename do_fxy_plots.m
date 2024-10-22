@@ -126,37 +126,37 @@ for i=1:elecs
 end
 % delete(ppm);
 
-ioz_figname = ['200_' gc_info{1}.seedstr '_IOZ.png'];
+ioz_figname = ['400_' gc_info{1}.seedstr '_IOZ.png'];
 ioz_figpath = fullfile(forwarddir, ioz_figname);
 ioz_titstr = [gc_info{1}.seedstr ' -> IOZ'];
 do_tfs_fig(squeeze(mean(iozmeanvals_Fxy, "omitnan")), tfsclim, gc_info{1}.freqs, ...
            gc_info{1}.srate, ioz_titstr, ioz_figpath, timevec);
 
-zioz_figname = ['z_201_' gc_info{1}.seedstr '_IOZ.png'];
+zioz_figname = ['z_401_' gc_info{1}.seedstr '_IOZ.png'];
 zioz_figpath = fullfile(forwarddir, zioz_figname);
 zioz_titstr = ['z(' gc_info{1}.seedstr ' -> IOZ)'];
 do_tfs_fig(iozzscore_Fxy, zclim, gc_info{1}.freqs, ...
     gc_info{1}.srate, zioz_titstr, zioz_figpath, timevec);
 
-nonioz_figname = ['202_' gc_info{1}.seedstr '_nonIOZ.png'];
+nonioz_figname = ['402_' gc_info{1}.seedstr '_nonIOZ.png'];
 nonioz_figpath = fullfile(forwarddir, nonioz_figname);
 nonioz_titstr = [gc_info{1}.seedstr ' -> nonIOZ'];
 do_tfs_fig(squeeze(mean(noniozmeanvals_Fxy, "omitnan")), tfsclim, gc_info{1}.freqs, ...
            gc_info{1}.srate, nonioz_titstr, nonioz_figpath, timevec);
 
-znonioz_figname = ['z_203_' gc_info{1}.seedstr '_nonIOZ.png'];
+znonioz_figname = ['z_403_' gc_info{1}.seedstr '_nonIOZ.png'];
 znonioz_figpath = fullfile(forwarddir, znonioz_figname);
 znonioz_titstr = ['z(' gc_info{1}.seedstr ' -> nonIOZ)'];
 do_tfs_fig(iozzscore_Fxy, zclim, gc_info{1}.freqs, ...
     gc_info{1}.srate, znonioz_titstr, znonioz_figpath, timevec);
 
-zdiffioz_figname = ['zdiff_204_' gc_info{1}.seedstr '_IOZ.png'];
+zdiffioz_figname = ['zdiff_404_' gc_info{1}.seedstr '_IOZ.png'];
 zdiffioz_figpath = fullfile(diffdir, zdiffioz_figname);
 zdiffioz_titstr = ['z(IOZ -> ' gc_info{1}.seedstr ') - z(' gc_info{1}.seedstr ' -> IOZ)'];
 do_tfs_fig(iozzscore_Fxy - iozzscore_Fyx, zclim, gc_info{1}.freqs, ...
            gc_info{1}.srate, zdiffioz_titstr, zdiffioz_figpath, timevec);
 
-zdiffnonioz_figname = ['zdiff_205_' gc_info{1}.seedstr '_nonIOZ.png'];
+zdiffnonioz_figname = ['zdiff_405_' gc_info{1}.seedstr '_nonIOZ.png'];
 zdiffnonioz_figpath = fullfile(diffdir, zdiffnonioz_figname);
 zdiffnonioz_titstr = ['z(nonIOZ -> ' gc_info{1}.seedstr ') - z(' gc_info{1}.seedstr ' -> nonIOZ)'];
 do_tfs_fig(noniozzscore_Fxy - noniozzscore_Fyx, zclim, gc_info{1}.freqs, ...
@@ -182,25 +182,25 @@ for i=1:elecs
 end
 % delete(ppm);
 
-ioz_figname = ['200_IOZ_' gc_info{1}.seedstr '.png'];
+ioz_figname = ['400_IOZ_' gc_info{1}.seedstr '.png'];
 ioz_figpath = fullfile(backwarddir, ioz_figname);
 ioz_titstr = ['IOZ -> ' gc_info{1}.seedstr];
 do_tfs_fig(squeeze(mean(iozmeanvals_Fyx, "omitnan")), tfsclim, gc_info{1}.freqs, ...
            gc_info{1}.srate, ioz_titstr, ioz_figpath, timevec);
 
-zioz_figname = ['z_201_IOZ_' gc_info{1}.seedstr '.png'];
+zioz_figname = ['z_401_IOZ_' gc_info{1}.seedstr '.png'];
 zioz_figpath = fullfile(backwarddir, zioz_figname);
 zioz_titstr = ['z(IOZ -> ' gc_info{1}.seedstr ')'];
 do_tfs_fig(iozzscore_Fyx, zclim, gc_info{1}.freqs, ...
     gc_info{1}.srate, zioz_titstr, zioz_figpath, timevec);
 
-nonioz_figname = ['202_nonIOZ_' gc_info{1}.seedstr '.png'];
+nonioz_figname = ['402_nonIOZ_' gc_info{1}.seedstr '.png'];
 nonioz_figpath = fullfile(backwarddir, nonioz_figname);
 nonioz_titstr = ['nonIOZ -> ' gc_info{1}.seedstr];
 do_tfs_fig(squeeze(mean(noniozmeanvals_Fyx, "omitnan")), tfsclim, gc_info{1}.freqs, ...
            gc_info{1}.srate, nonioz_titstr, nonioz_figpath, timevec);
 
-znonioz_figname = ['z_203_nonIOZ_' gc_info{1}.seedstr '.png'];
+znonioz_figname = ['z_403_nonIOZ_' gc_info{1}.seedstr '.png'];
 znonioz_figpath = fullfile(backwarddir, znonioz_figname);
 znonioz_titstr = ['z(nonIOZ -> ' gc_info{1}.seedstr ')'];
 do_tfs_fig(noniozzscore_Fyx, zclim, gc_info{1}.freqs, ...
