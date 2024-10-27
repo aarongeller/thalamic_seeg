@@ -31,25 +31,38 @@ end
 
 datapath = '/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/';
 
+prefix = fullfile(datapath, [subj '/' subj '_']);
+
 switch subj
   case 'UCHSN'
-    prefix = fullfile(datapath, 'UCHSN/UCHSN_09_04_23__16_36_19');
     duration_s = 30;
     seedstr = 'LCM2';
-    sz_onset_s = 81.6;
-    % sz_offset_s = 99;
+    sz_onset_s = [97.6 84.4 97.9 79 66.4 82.1 81 102.6 60.6 91.2 ...
+                  105.4 70.4 ];
     sz_offset_s = nan;
     if strcmp(cond, 'onset')
-        offset_s = 0;
-        eegfile = 'data_block001_02_notch.mat';
-        extra_offset = 60; % for TFS plot if we want to adjust time axis
+        duration_s = 20;
+        channeldirpart = '10_04_23__12_38_07';
+        eegfiles = { '10_04_23__12_38_07/data_block001_notch.mat' ...
+                     '10_04_23__18_58_17/data_block001_notch.mat' ...
+                     '11_04_23__07_54_50/data_block001_notch.mat' ...
+                     '11_04_23__08_44_42/data_block001_notch.mat' ...
+                     '11_04_23__09_30_50/data_block001_notch.mat' ...
+                     '12_04_23__11_23_41/data_block001_notch.mat' ...
+                     '12_04_23__17_08_19/data_block001_notch.mat' ...
+                     '12_04_23__17_44_02/data_block001_notch.mat' ...
+                     '13_04_23__08_22_24/data_block001_notch.mat' ...
+                     '13_04_23__08_35_40/data_block001_notch.mat' ...
+                     '13_04_23__09_00_33/data_block001_notch.mat' ...
+                     '13_04_23__09_31_42/data_block001_notch.mat' ...
+                   };
+        ioz = {'LPT5', 'LPT6', 'LPT7', 'LPT8'};
     elseif strcmp(cond, 'offset')
         offset_s = 70;
         eegfile = 'data_block001_notch.mat';
         extra_offset = 0;
     end
   case 'UCHGG'
-    prefix = fullfile(datapath, 'UCHGG/UCHGG_');
     seedstr = 'RPI1';
     sz_onset_s  = [83 83.9 86.4 82.5 69.6 69.6 83.8 69.9 93.6 83.7 83.7 ...
                    72 68.4 83.1 70.3 76.5];
@@ -88,7 +101,6 @@ switch subj
         eegfile = 'data_block001_resample_notch.mat';
     end
   case 'UCHVG'
-    prefix = fullfile(datapath, 'UCHVG/UCHVG_');
     seedstr = 'LANT1';
     sz_onset_s = [83.4 82.3 82.6];
     sz_offset_s = 171;
@@ -113,7 +125,6 @@ switch subj
         eegfile = 'data_block001.mat';
     end
   case 'UCHDR2'
-    prefix = fullfile(datapath, 'UCHDR240313/UCHDR240313_15_03_24__09_02_27');
     seedstr = 'LTOM1';
     sz_onset_s = 59.7;
     sz_offset_s = 76;
