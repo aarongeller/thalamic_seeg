@@ -68,7 +68,7 @@ for i=1:length(gc_info) % for every file,
 end
 
 skipthese = {'SpO2' 'EtCO2' 'Pulse' 'CO2Wave' '$RPT11' '$RPT12' 'EKG1' ...
-             'C451' 'C461' 'Annotations'};
+             'C451' 'C461' 'Annotations' '$LTP11' '$LTP12'};
 
 badinds = get_matching_inds(RowNames, skipthese);
 goodinds = setdiff(1:elecs, badinds);
@@ -109,20 +109,24 @@ noniozzscore_Fyx = do_zscore(squeeze(mean(noniozmeanvals_Fyx, "omitnan")), ...
 [channel_names, inds] = sort(gc_info{1}.channel_names);
 
 for i=1:elecs
-    figname = [sprintf('%03d', i) '_' gc_info{1}.seedstr '_' channel_names{i} '.png'];
-    figpath = fullfile(forwarddir, figname);
-    titstr = [gc_info{1}.seedstr ' -> ' channel_names{i}];
-    do_tfs_fig(squeeze(meanvals_Fxy(inds(i),:,:)), tfsclim, gc_info{1}.freqs, ...
-               gc_info{1}.srate, titstr, figpath, timevec);
+    if length(find(badinds==inds(i)))>0
+        continue
+    else
+        figname = [sprintf('%03d', i) '_' gc_info{1}.seedstr '_' channel_names{i} '.png'];
+        figpath = fullfile(forwarddir, figname);
+        titstr = [gc_info{1}.seedstr ' -> ' channel_names{i}];
+        do_tfs_fig(squeeze(meanvals_Fxy(inds(i),:,:)), tfsclim, gc_info{1}.freqs, ...
+                   gc_info{1}.srate, titstr, figpath, timevec);
 
-    zfigname = ['z_' sprintf('%03d', i) '_' gc_info{1}.seedstr '_' channel_names{i} '.png'];
-    zfigpath = fullfile(forwarddir, zfigname);
-    ztitstr = ['Z-Score ' gc_info{1}.seedstr ' -> ' channel_names{i}];
-    do_tfs_fig(squeeze(zvals_Fxy(inds(i),:,:)), zclim, gc_info{1}.freqs, gc_info{1}.srate, ...
-               ztitstr, zfigpath, timevec);
+        zfigname = ['z_' sprintf('%03d', i) '_' gc_info{1}.seedstr '_' channel_names{i} '.png'];
+        zfigpath = fullfile(forwarddir, zfigname);
+        ztitstr = ['Z-Score ' gc_info{1}.seedstr ' -> ' channel_names{i}];
+        do_tfs_fig(squeeze(zvals_Fxy(inds(i),:,:)), zclim, gc_info{1}.freqs, gc_info{1}.srate, ...
+                   ztitstr, zfigpath, timevec);
 
-    % pause(100/total);
-    % ppm.increment();
+        % pause(100/total);
+        % ppm.increment();
+    end
 end
 % delete(ppm);
 
@@ -166,19 +170,23 @@ do_tfs_fig(noniozzscore_Fxy - noniozzscore_Fyx, zclim, gc_info{1}.freqs, ...
 %                         'showWorkerProgress', true, 'title', ...
 %                         'Plotting Backward Connectivity');
 for i=1:elecs
-    figname = [sprintf('%03d', i) '_' channel_names{i} '_' gc_info{1}.seedstr '.png'];
-    figpath = fullfile(backwarddir, figname);
-    titstr = [channel_names{i} ' -> ' gc_info{1}.seedstr];
-    do_tfs_fig(squeeze(meanvals_Fyx(inds(i),:,:)), tfsclim, gc_info{1}.freqs, ...
-               gc_info{1}.srate, titstr, figpath, timevec);
+    if length(find(badinds==inds(i)))>0
+        continue
+    else
+        figname = [sprintf('%03d', i) '_' channel_names{i} '_' gc_info{1}.seedstr '.png'];
+        figpath = fullfile(backwarddir, figname);
+        titstr = [channel_names{i} ' -> ' gc_info{1}.seedstr];
+        do_tfs_fig(squeeze(meanvals_Fyx(inds(i),:,:)), tfsclim, gc_info{1}.freqs, ...
+                   gc_info{1}.srate, titstr, figpath, timevec);
 
-    zfigname = ['z_' sprintf('%03d', i) '_' channel_names{i} '_' gc_info{1}.seedstr '.png'];
-    zfigpath = fullfile(backwarddir, zfigname);
-    ztitstr = ['Z-Score ' channel_names{i} ' -> ' gc_info{1}.seedstr];
-    do_tfs_fig(squeeze(zvals_Fyx(inds(i),:,:)), zclim, gc_info{1}.freqs, gc_info{1}.srate, ...
-               ztitstr, zfigpath, timevec);
-    % pause(100/total);
-    %    ppm.increment();
+        zfigname = ['z_' sprintf('%03d', i) '_' channel_names{i} '_' gc_info{1}.seedstr '.png'];
+        zfigpath = fullfile(backwarddir, zfigname);
+        ztitstr = ['Z-Score ' channel_names{i} ' -> ' gc_info{1}.seedstr];
+        do_tfs_fig(squeeze(zvals_Fyx(inds(i),:,:)), zclim, gc_info{1}.freqs, gc_info{1}.srate, ...
+                   ztitstr, zfigpath, timevec);
+        % pause(100/total);
+        %    ppm.increment();
+    end
 end
 % delete(ppm);
 
