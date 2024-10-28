@@ -169,8 +169,7 @@ baselinevals = nan(elecs, length(allsz), freqs, srate*halfwindow_s);
 baselinemeans = nan(elecs, freqs, srate*halfwindow_s);
 zscore_clim = [-3 3];
 
-skipthese = {'SpO2' 'EtCO2' 'Pulse' 'CO2Wave' '$RPT11' '$RPT12' 'EKG1' ...
-             'C451' 'C461' 'Annotations' '$LTP11' '$LTP12'};
+skipthese = get_skip();
 
 for i=1:length(allsz)
     % for every sz

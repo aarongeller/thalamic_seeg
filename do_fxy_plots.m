@@ -67,8 +67,7 @@ for i=1:length(gc_info) % for every file,
     end
 end
 
-skipthese = {'SpO2' 'EtCO2' 'Pulse' 'CO2Wave' '$RPT11' '$RPT12' 'EKG1' ...
-             'C451' 'C461' 'Annotations' '$LTP11' '$LTP12'};
+skipthese = get_skip();
 
 badinds = get_matching_inds(RowNames, skipthese);
 goodinds = setdiff(1:elecs, badinds);
