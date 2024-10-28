@@ -46,6 +46,7 @@ imgfiles_backward = glob(os.path.join(figspath_backward, '*.png'))
 imgfiles_backward.sort()
 
 imgfiles_diff = glob(os.path.join(figspath_diff, '*.png'))
+imgfiles_diff.sort()
 
 imgsize = 0.37
 total_pairs = int(len(imgfiles_forward)/2)
@@ -76,9 +77,9 @@ postamble = "\\end{longtable}\n\\end{landscape}\n\n"
 texf.write(postamble)
 
 thisline = "\pagebreak\n\\begin{tabular}{cc}\\\\\n\includegraphics[width=" + str(imgsize2) \
-    + "\\textwidth]{analyses/UCHGG/figs/granger\_onset/diff/zdiff\_204\_RPI1\_IOZ} & \n" \
+    + "\\textwidth]{" + imgfiles_diff[0] + "} & \n" \
     + "\\includegraphics[width=" + str(imgsize2) \
-    + "\\textwidth]{analyses/UCHGG/figs/granger\_onset/diff/zdiff\_205\_RPI1\_nonIOZ}\\\\\n\\end{tabular}\n\n"
+    + "\\textwidth]{" + imgfiles_diff[1] + "}\\\\\n\\end{tabular}\n\n"
 texf.write(thisline)
 
 texf.write("\\end{document}\n")
