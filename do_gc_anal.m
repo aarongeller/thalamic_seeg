@@ -124,6 +124,42 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
+  case 'UCHDR'
+    seedstr = 'LANT1';
+    sz_onset_s = [46.8 53.4 47.9 46.5 47.6 46.8 47.3 47 47.2 45.5 ...
+                  44.9 46.8 47.5];
+    switch cond
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '02_08_22__13_02_47';
+
+        eegfiles = {'02_08_22__13_02_47/data_block001_notch.mat' ...
+                    '02_08_22__13_38_36/data_block001_notch.mat' ...
+                    '02_08_22__13_41_01/data_block001_notch.mat' ...
+                    '02_08_22__13_43_37/data_block001_notch.mat' ...
+                    '02_08_22__13_45_44/data_block001_notch.mat' ...
+                    '02_08_22__13_47_15/data_block001_notch.mat' ...
+                    '02_08_22__13_50_04/data_block001_notch.mat' ...
+                    '02_08_22__13_52_22/data_block001_notch.mat' ...
+                    '02_08_22__13_53_55/data_block001_notch.mat' ...
+                    '02_08_22__13_56_06/data_block001_notch.mat' ...
+                    '02_08_22__13_57_59/data_block001_notch.mat' ...
+                    '02_08_22__14_00_35/data_block001_notch.mat' ...
+                    '02_08_22__14_02_08/data_block001_notch.mat' ...
+                   };
+
+        ioz = {'MEGA6', 'MEGA7'};
+      case 'finderror'
+        duration_s = 5;
+        offset_s = 152; % was getting error if including second 155
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
   case 'UCHDR2'
     seedstr = 'LTOM1';
     sz_onset_s = 59.7;
@@ -168,6 +204,7 @@ if overwrite_data
         eval(['gc_info = ' varname ';']);
     end
     for i=1:length(eegfiles)
+        fprintf([int2str(i) '/' int2str(length(eegfiles)) ') ']);
         if any(strcmp(eegfiles{i}, gc_info.files)) && ~overwrite_alldata
             display(['Skipping ' eegfiles{i} '.']);
             continue
