@@ -160,6 +160,43 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
+  case 'UCHCV220919'
+    seedstr = 'LPUL1';
+    sz_onset_s = [80.8 71.096 75.46 78.73 82.39 82.24 89.63 78.24 ...
+                  64.54 80.33];
+    switch cond
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '21_09_22__01_12_19';
+
+        eegfiles = {'21_09_22__01_12_19/data_block001_notch.mat' ...
+                    '21_09_22__02_22_43/data_block001_notch.mat' ...
+                    '21_09_22__05_33_34/data_block001_notch.mat' ...
+                    '21_09_22__18_20_52/data_block001_notch.mat' ...
+                    '23_09_22__04_10_35/data_block001_notch.mat' ...
+                    '24_09_22__05_44_44/data_block001_notch.mat' ...
+                    '24_09_22__16_49_27/data_block001_notch.mat' ...
+                    '25_09_22__02_50_31/data_block001_notch.mat' ...
+                    '25_09_22__03_48_37/data_block001_notch.mat' ...
+                    '25_09_22__03_59_14/data_block001_notch.mat' ...
+                   };
+
+        ioz_L_small = {'LTO1' 'LTO2' 'LTO3' 'LTO4'};
+        ioz_L_big = {ioz_L_small{:} 'LTO5' 'LTO6' 'LTO7' 'LTO8' 'LTO9' 'LTO10' ...
+                     'LMIO6' 'LMIO7' 'LMIO8' 'LMIO9' 'LMIO10' 'LMIO11' ...
+                     'LMI12' 'LMI13'};
+        ioz = ioz_L_big;
+      case 'finderror'
+        duration_s = 5;
+        offset_s = 152; % was getting error if including second 155
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
   case 'UCHDR2'
     seedstr = 'LTOM1';
     sz_onset_s = 59.7;
