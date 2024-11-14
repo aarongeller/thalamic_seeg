@@ -197,6 +197,40 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
+  case 'UCHSM240205'
+    seedstr = 'LPI1';
+    sz_onset_s = [52.53 58.96 62.24 60.58 66.14 67.97 60.14 60.99];
+
+    switch cond
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '06_02_24__19_11_17';
+
+        eegfiles = {'06_02_24__19_11_17/data_block001_notch.mat' ...
+                    '07_02_24__00_16_31/data_block001_notch.mat' ...
+                    '07_02_24__13_33_37/data_block001_notch.mat' ...
+                    '08_02_24__06_08_29/data_block001_notch.mat' ...
+                    '09_02_24__09_21_23/data_block001_notch.mat' ...
+                    '10_02_24__08_31_37/data_block001_notch.mat' ...
+                    '10_02_24__12_20_50/data_block001_notch.mat' ...
+                    '10_02_24__14_19_51/data_block001_notch.mat' ...
+                   };
+
+        ioz = {'LAH1' 'LAH2' 'LAH3' 'LAH4' 'LAH5' ...
+               'LPH1' 'LPH2' 'LPH3' 'LPH4' 'LPH5' ...
+               'LBT1' 'LBT2' 'LBT3' ...
+               'LAMY1' 'LAMY2' 'LAMY3' 'LAMY4'};
+      case 'finderror'
+        duration_s = 5;
+        offset_s = 152; % was getting error if including second 155
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
   case 'UCHDR2'
     seedstr = 'LTOM1';
     sz_onset_s = 59.7;
