@@ -237,12 +237,14 @@ switch subj
            'LAMY1' 'LAMY2' 'LAMY3' 'LAMY4'};
     seedstr = 'LPI1';
   case 'UCHAK'
-    onset_sz_p1 = {'06_04_24__09_39_50/timefreq_connect1_cohere_241012_1018.mat' ...
-               };
+    onset_sz_filtered = {'06_04_24__09_39_50/timefreq_connect1_cohere_241117_1415.mat' ...
+                        '06_04_24__14_10_10/timefreq_connect1_cohere_241117_1435.mat' ...
+                        };
 
-    offset_sz_p1 = {'06_04_24__09_39_50/timefreq_connect1_cohere_241012_1019.mat' ...
-                };
+    onset_times = [102.91 67.05];
 
+    ioz = {'LMI5', 'LMI6' 'LMI7'};
+    seedstr = 'LANT1';
 end
 
 if onsetmode

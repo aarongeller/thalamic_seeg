@@ -231,6 +231,31 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
+  case 'UCHAK'
+    seedstr = 'LANT1';
+    sz_onset_s = [102.91 67.05];
+
+    switch cond
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '06_04_24__09_39_50';
+
+        eegfiles = {'06_04_24__09_39_50/data_block001_notch.mat' ...
+                    '06_04_24__14_10_10/data_block001_notch.mat' ...
+                   };
+
+        ioz = {'LMI5', 'LMI6' 'LMI7'};
+      case 'finderror'
+        duration_s = 5;
+        offset_s = 152; % was getting error if including second 155
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
   case 'UCHDR2'
     seedstr = 'LTOM1';
     sz_onset_s = 59.7;
