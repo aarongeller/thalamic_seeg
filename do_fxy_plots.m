@@ -89,21 +89,13 @@ for i=1:elecs
     end
 end
 
-iozmeanvals_Fxy = meanvals_Fxy(iozinds,:,:);
-iozmeanvals_Fyx = meanvals_Fyx(iozinds,:,:);
-iozbaselinemeans_Fxy = baselinemeans_Fxy(iozinds,:,:);
-iozbaselinemeans_Fyx = baselinemeans_Fyx(iozinds,:,:);
-iozzscore_Fxy = do_zscore(squeeze(mean(iozmeanvals_Fxy)), squeeze(mean(iozbaselinemeans_Fxy)));
-iozzscore_Fyx = do_zscore(squeeze(mean(iozmeanvals_Fyx)), squeeze(mean(iozbaselinemeans_Fyx)));
+[iozmeanvals_Fxy, iozmeanvals_Fyx, iozbaselinemeans_Fxy, iozbaselinemeans_Fyx, ...
+ iozzscore_Fxy, iozzscore_Fyx] = do_roi_anal(meanvals_Fxy, meanvals_Fyx, baselinemeans_Fxy, ...
+                                             baselinemeans_Fyx, iozinds);
 
-noniozmeanvals_Fxy = meanvals_Fxy(noniozinds,:,:);
-noniozmeanvals_Fyx = meanvals_Fyx(noniozinds,:,:);
-noniozbaselinemeans_Fxy = baselinemeans_Fxy(noniozinds,:,:);
-noniozbaselinemeans_Fyx = baselinemeans_Fyx(noniozinds,:,:);
-noniozzscore_Fxy = do_zscore(squeeze(mean(noniozmeanvals_Fxy, "omitnan")), ...
-                             squeeze(mean(noniozbaselinemeans_Fxy, "omitnan")));
-noniozzscore_Fyx = do_zscore(squeeze(mean(noniozmeanvals_Fyx, "omitnan")), ...
-                             squeeze(mean(noniozbaselinemeans_Fyx, "omitnan")));
+[noniozmeanvals_Fxy, noniozmeanvals_Fyx, noniozbaselinemeans_Fxy, noniozbaselinemeans_Fyx, ...
+ noniozzscore_Fxy, noniozzscore_Fyx] = do_roi_anal(meanvals_Fxy, meanvals_Fyx, baselinemeans_Fxy, ...
+                                                  baselinemeans_Fyx, noniozinds);
 
 [channel_names, inds] = sort(gc_info{1}.channel_names);
 
@@ -215,6 +207,15 @@ do_tfs_fig(noniozzscore_Fyx, zclim, gc_info{1}.freqs, ...
 
 close all;
 toc;
+
+function [mean_fxy, mean_fyx, baseline_fxy, baseline_fyx, z_fxy, z_fyx] ...
+        = do_roi_anal(dat_fxy, dat_fyx, baselinedat_fxy, baselinedat_fyx, inds)
+mean_fxy = dat_fxy(inds,:,:);
+mean_fyx = dat_fyx(inds,:,:);
+baseline_fxy = baselinedat_fxy(inds,:,:);
+baseline_fyx = baselinedat_fyx(inds,:,:);
+z_fxy = do_zscore(squeeze(mean(mean_fxy, "omitnan")), squeeze(mean(baseline_fxy, "omitnan")));
+z_fyx = do_zscore(squeeze(mean(mean_fyx, "omitnan")), squeeze(mean(baseline_fyx, "omitnan")));
 
 function do_tfs_fig(dat, cl, freqs, srate, titstr, figpath, ...
                     timevec);
