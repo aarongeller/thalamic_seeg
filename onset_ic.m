@@ -245,6 +245,19 @@ switch subj
 
     ioz = {'LMI5', 'LMI6' 'LMI7'};
     seedstr = 'LANT1';
+  case 'UCHDR240313'
+    onset_sz_filtered = {'15_03_24__09_02_13/timefreq_connect1_cohere_241117_1527.mat' ...
+                        '15_03_24__09_16_49/timefreq_connect1_cohere_241117_1532.mat' ...
+                        '15_03_24__11_50_31/timefreq_connect1_cohere_241117_1537.mat' ...
+                        '15_03_24__12_56_07/timefreq_connect1_cohere_241117_1543.mat' ...
+                        '15_03_24__16_13_41/timefreq_connect1_cohere_241117_1548.mat' ...
+                        };
+
+    onset_times = [74.098 71.294 79.96 86.979 87.156];
+
+    ioz = {'RTOI1' 'RTOI2' 'RTOI3' 'RTOI4' 'RTOI5' 'RTOI6'...
+           'LTOI1' 'LTOI2' 'LTOI3' 'LTOI4'};
+    seedstr = 'LTOM1';
 end
 
 if onsetmode

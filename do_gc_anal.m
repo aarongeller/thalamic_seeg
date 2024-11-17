@@ -256,18 +256,34 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
-  case 'UCHDR2'
+  case 'UCHDR240313'
     seedstr = 'LTOM1';
-    sz_onset_s = 59.7;
-    sz_offset_s = 76;
+    sz_onset_s =  [74.098 71.294 79.96 86.979 87.156];
     switch cond
-      case 'wholesz'
-        duration_s = 35;
-        offset_s = 45;
-        extra_offset = 0;
-        eegfile = 'data_block001_notch.mat';
-    end
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '15_03_24__09_02_13';
 
+        eegfiles =  {'15_03_24__09_02_13/data_block001_notch.mat' ...
+                     '15_03_24__09_16_49/data_block001_notch.mat' ...
+                     '15_03_24__11_50_31/data_block001_notch.mat' ...
+                     '15_03_24__12_56_07/data_block001_notch.mat' ...
+                     '15_03_24__16_13_41/data_block001_notch.mat' ...
+                    };
+
+        ioz = {'RTOI1' 'RTOI2' 'RTOI3' 'RTOI4' 'RTOI5' 'RTOI6'...
+               'LTOI1' 'LTOI2' 'LTOI3' 'LTOI4'};
+      case 'finderror'
+        duration_s = 5;
+        offset_s = 152; % was getting error if including second 155
+        extra_offset = 0;
+        eegfile = 'data_block001_04.mat';
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
 end
 
 outputdir = ['granger_' cond];
