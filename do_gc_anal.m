@@ -316,7 +316,8 @@ if overwrite_data
         eval(['gc_info = ' varname ';']);
     end
     for i=1:length(eegfiles)
-        fprintf([int2str(i) '/' int2str(length(eegfiles)) ') ']);
+        d = fprintf('%s ', datetime("now"));
+        fprintf([d int2str(i) '/' int2str(length(eegfiles)) ') ']);
         if any(strcmp(eegfiles{i}, gc_info.files)) && ~overwrite_alldata
             display(['Skipping ' eegfiles{i} '.']);
             continue
