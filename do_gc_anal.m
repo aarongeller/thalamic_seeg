@@ -18,7 +18,7 @@ if ~exist('tfsclim', 'var')
 end
 
 if ~exist('zclim', 'var')
-    zclim = [-10 10];
+    zclim = [-5 5];
 end
 
 if ~exist('srate', 'var')
