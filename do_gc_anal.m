@@ -1,16 +1,21 @@
-function do_gc_anal(subj, cond, overwrite_data, overwrite_figs, ...
-                    overwrite_alldata, tfsclim, clim, srate, halfwindow_s)
+function do_gc_anal(subj, cond, overwrite_all_figs, overwrite_ioz_figs, ...
+                    overwrite_data, overwrite_all_data, tfsclim, ...
+                    clim, srate, halfwindow_s)
+
+if ~exist('overwrite_all_figs', 'var')
+    overwrite_all_figs = 1;
+end
+
+if ~exist('overwrite_ioz_figs', 'var')
+    overwrite_ioz_figs = 1;
+end
 
 if ~exist('overwrite_data', 'var')
     overwrite_data = 0;
 end
 
-if ~exist('overwrite_figs', 'var')
-    overwrite_figs = 1;
-end
-
-if ~exist('overwrite_alldata', 'var')
-    overwrite_alldata = 0;
+if ~exist('overwrite_all_data', 'var')
+    overwrite_all_data = 0;
 end
 
 if ~exist('tfsclim', 'var')
@@ -318,7 +323,7 @@ if overwrite_data
     for i=1:length(eegfiles)
         d = fprintf('%s ', datetime("now"));
         fprintf([d int2str(i) '/' int2str(length(eegfiles)) ') ']);
-        if any(strcmp(eegfiles{i}, gc_info.files)) && ~overwrite_alldata
+        if any(strcmp(eegfiles{i}, gc_info.files)) && ~overwrite_all_data
             display(['Skipping ' eegfiles{i} '.']);
             continue
         else
@@ -349,7 +354,8 @@ else
 end
 
 % make figs if necessary
-if overwrite_figs
-    do_fxy_plots(gc_info.data, figsdir, tfsclim, zclim, timevec);
+if overwrite_all_figs | overwrite_ioz_figs
+    do_fxy_plots(gc_info.data, figsdir, tfsclim, zclim, timevec, ...
+                 overwrite_all_figs, overwrite_ioz_figs);
     system(['python make_gc_pdf.py ' subj ' granger_' cond]);
 end
