@@ -1,21 +1,21 @@
-function [thresholded_uncorrected_tfs thresholded_pixelcorrected_tfs thresholded_clustercorrected_tfs] ...
+function [uncorrected_tfs pixelcorrected_tfs clustercorrected_tfs] ...
     =  gc_shuffle_anal(allvals, baselinevals, elecinds, shufflenum, actual_tfs)
 
 % allvals: elecs x trials x freqs x time
 
 % elec_allvals: trials x freqs x time
-elec_allvals = squeeze(mean(allvals(elecinds, :, :, :)));
+elec_allvals = squeeze(mean(allvals(elecinds, :, :, :), "omitnan"));
 % elec_baselinevals: trials x freqs x time
-elec_baselinevals = squeeze(mean(baselinevals(elecinds, :, :, :)));
+elec_baselinevals = squeeze(mean(baselinevals(elecinds, :, :, :), "omitnan"));
 
 tic;
 thresh_frac = 0.25; % Cohen Ch 33 sample code 
 [res, low_dist, high_dist, blobs] = baseline_permute(elec_allvals, elec_baselinevals, shufflenum, thresh_frac);
 toc;
 
-thresholded_uncorrected_tfs = do_thresh(actual_tfs, res);
-thresholded_pixelcorrected_tfs = do_thresh(actual_tfs, low_dist, high_dist);
-thresholded_clustercorrected_tfs = do_cluster_thresh(actual_tfs, blobs, thresh_frac);
+uncorrected_tfs = do_thresh(actual_tfs, res);
+pixelcorrected_tfs = do_thresh(actual_tfs, low_dist, high_dist);
+clustercorrected_tfs = do_cluster_thresh(actual_tfs, blobs, thresh_frac);
 
 function [res, low_dist, high_dist, blobscores] = baseline_permute(trialvals, baselinevals, shufflenum, thresh_frac)
 numtrials = size(trialvals,1);
@@ -32,9 +32,9 @@ concatenated_orig_data(:,:,(baseline_samples+1):total_samples) = trialvals;
 res = nan(shufflenum, trial_freqs, trial_samples);
 low_dist = nan(shufflenum, 1);
 high_dist = nan(shufflenum, 1);
-blobscores = nan(shufflenum, 1);
+blobscores = zeros(shufflenum, 1);
 
-parfor i=1:shufflenum
+for i=1:shufflenum
     offsets = randi(total_samples, numtrials, 1);    
     concatenated_shuffled_data = nan(size(concatenated_orig_data));
 
@@ -49,7 +49,8 @@ parfor i=1:shufflenum
     shuffled_trialvals = concatenated_shuffled_data(:, :, (baseline_samples+1):end);
 
     % take mean over trials and save the z-score TFS for this shuffle
-    thistfs = do_zscore(squeeze(mean(shuffled_trialvals)), squeeze(mean(shuffled_baselinevals)));
+    thistfs = do_zscore(squeeze(mean(shuffled_trialvals)), ...
+                        squeeze(mean(shuffled_baselinevals)));
     res(i,:,:) = thistfs;
     
     % save extreme values for pixel-based correction
@@ -65,7 +66,9 @@ parfor i=1:shufflenum
         clustsum(j) = abs(sum(thistfs(mapl(:)==j)));
     end
 
-    blobscores(i) = max(clustsum);
+    if length(clustsum)>0
+        blobscores(i) = max(clustsum);
+    end
 end
 
 function thresholded_tfs = do_thresh(orig_tfs, low_thresh, high_thresh)
@@ -91,7 +94,7 @@ else
 end
 
 thresholded_tfs = zeros(size(orig_tfs));
-parfor i=1:size(orig_tfs,1)
+for i=1:size(orig_tfs,1)
     for j=1:size(orig_tfs,2)
         p1 = prctile(low_dist(:,i,j), 2.5);
         p2 = prctile(high_dist(:,i,j), 97.5);
