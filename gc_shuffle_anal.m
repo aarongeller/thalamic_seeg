@@ -66,9 +66,7 @@ for i=1:shufflenum
         clustsum(j) = abs(sum(thistfs(mapl(:)==j)));
     end
 
-    if length(clustsum)>0
-        blobscores(i) = max(clustsum);
-    end
+    blobscores(i) = max(clustsum);
 end
 
 function thresholded_tfs = do_thresh(orig_tfs, low_thresh, high_thresh)
