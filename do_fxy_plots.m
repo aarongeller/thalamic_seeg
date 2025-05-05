@@ -132,7 +132,7 @@ if overwrite_all_figs
 end
 % delete(ppm);
 
-shufflenum = 100;
+shufflenum = 1000;
 
 if overwrite_all_figs | overwrite_ioz_figs
     ioz_figname = ['400_' gc_info{1}.seedstr '_IOZ.png'];
@@ -176,21 +176,21 @@ if overwrite_all_figs | overwrite_ioz_figs
         gc_shuffle_anal(allvals_Fxy, baselinevals_Fxy, iozinds, shufflenum, iozzscore_Fxy);
 
     % 1) no correction for multiple comparisons
-    thresh_zioz_figname = ['threshz_406_' gc_info{1}.seedstr '_IOZ.png'];
+    thresh_zioz_figname = ['thresh_406_z' gc_info{1}.seedstr '_IOZ.png'];
     thresh_zioz_figpath = fullfile(forwarddir, thresh_zioz_figname);
     thresh_zioz_titstr = ['Thresholded z(' gc_info{1}.seedstr ' -> IOZ)'];
     do_tfs_fig(thresh_zioz_fxy, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, thresh_zioz_titstr, thresh_zioz_figpath, timevec);
 
     % 2) pixel-based correction
-    pixel_thresh_zioz_figname = ['pixel_threshz_407_' gc_info{1}.seedstr '_IOZ.png'];
+    pixel_thresh_zioz_figname = ['thresh_407_pixel' gc_info{1}.seedstr '_IOZ.png'];
     pixel_thresh_zioz_figpath = fullfile(forwarddir, pixel_thresh_zioz_figname);
     pixel_thresh_zioz_titstr = ['Pixel Corrected Thresholded z(' gc_info{1}.seedstr ' -> IOZ)'];
     do_tfs_fig(pixel_thresh_zioz_fxy, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, pixel_thresh_zioz_titstr, pixel_thresh_zioz_figpath, timevec);
 
     % 3) cluster-based correction
-    cluster_thresh_zioz_figname = ['cluster_threshz_408_' gc_info{1}.seedstr '_IOZ.png'];
+    cluster_thresh_zioz_figname = ['thresh_408_cluster' gc_info{1}.seedstr '_IOZ.png'];
     cluster_thresh_zioz_figpath = fullfile(forwarddir, cluster_thresh_zioz_figname);
     cluster_thresh_zioz_titstr = ['Cluster Corrected Thresholded z(' gc_info{1}.seedstr ' -> IOZ)'];
     do_tfs_fig(cluster_thresh_zioz_fxy, zclim, gc_info{1}.freqs, ...
@@ -201,21 +201,21 @@ if overwrite_all_figs | overwrite_ioz_figs
         gc_shuffle_anal(allvals_Fxy, baselinevals_Fxy, noniozinds, shufflenum, noniozzscore_Fxy);
 
     % 1) no correction for multiple comparisons
-    thresh_znonioz_figname = ['threshz_409_' gc_info{1}.seedstr '_nonIOZ.png'];
+    thresh_znonioz_figname = ['thresh_409_z' gc_info{1}.seedstr '_nonIOZ.png'];
     thresh_znonioz_figpath = fullfile(forwarddir, thresh_znonioz_figname);
     thresh_znonioz_titstr = ['Thresholded z(' gc_info{1}.seedstr ' -> nonIOZ)'];
     do_tfs_fig(thresh_znonioz_fxy, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, thresh_znonioz_titstr, thresh_znonioz_figpath, timevec);
 
     % 2) pixel-based correction
-    pixel_thresh_znonioz_figname = ['pixel_threshz_410_' gc_info{1}.seedstr '_nonIOZ.png'];
+    pixel_thresh_znonioz_figname = ['thresh_410_pixel' gc_info{1}.seedstr '_nonIOZ.png'];
     pixel_thresh_znonioz_figpath = fullfile(forwarddir, pixel_thresh_znonioz_figname);
     pixel_thresh_znonioz_titstr = ['Pixel Corrected Thresholded z(' gc_info{1}.seedstr ' -> nonIOZ)'];
     do_tfs_fig(pixel_thresh_znonioz_fxy, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, pixel_thresh_znonioz_titstr, pixel_thresh_znonioz_figpath, timevec);
 
     % 3) cluster-based correction
-    cluster_thresh_znonioz_figname = ['cluster_threshz_411_' gc_info{1}.seedstr '_nonIOZ.png'];
+    cluster_thresh_znonioz_figname = ['thresh_411_cluster_' gc_info{1}.seedstr '_nonIOZ.png'];
     cluster_thresh_znonioz_figpath = fullfile(forwarddir, cluster_thresh_znonioz_figname);
     cluster_thresh_znonioz_titstr = ['Cluster Corrected Thresholded z(' gc_info{1}.seedstr ' -> nonIOZ)'];
     do_tfs_fig(cluster_thresh_znonioz_fxy, zclim, gc_info{1}.freqs, ...
@@ -276,24 +276,24 @@ if overwrite_all_figs | overwrite_ioz_figs
 
     % thresholded TFS analyses
     [thresh_zioz_fyx, pixel_thresh_zioz_fyx, cluster_thresh_zioz_fyx] = ...
-        gc_shuffle_anal(allvals_Fyx, baselinevals_Fyx, iozinds, shufflenum, iozzscore_Fxy);
+        gc_shuffle_anal(allvals_Fyx, baselinevals_Fyx, iozinds, shufflenum, iozzscore_Fyx);
 
     % 1) no correction for multiple comparisons
-    thresh_zioz_figname = ['threshz_406_' gc_info{1}.seedstr '_IOZ.png'];
+    thresh_zioz_figname = ['thresh_406_z_' gc_info{1}.seedstr '_IOZ.png'];
     thresh_zioz_figpath = fullfile(backwarddir, thresh_zioz_figname);
     thresh_zioz_titstr = ['Thresholded z(' gc_info{1}.seedstr ' -> IOZ)'];
     do_tfs_fig(thresh_zioz_fyx, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, thresh_zioz_titstr, thresh_zioz_figpath, timevec);
 
     % 2) pixel-based correction
-    pixel_thresh_zioz_figname = ['pixel_threshz_407_' gc_info{1}.seedstr '_IOZ.png'];
+    pixel_thresh_zioz_figname = ['thresh_407_pixel_' gc_info{1}.seedstr '_IOZ.png'];
     pixel_thresh_zioz_figpath = fullfile(backwarddir, pixel_thresh_zioz_figname);
     pixel_thresh_zioz_titstr = ['Pixel Corrected Thresholded z(' gc_info{1}.seedstr ' -> IOZ)'];
     do_tfs_fig(pixel_thresh_zioz_fyx, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, pixel_thresh_zioz_titstr, pixel_thresh_zioz_figpath, timevec);
 
     % 3) cluster-based correction
-    cluster_thresh_zioz_figname = ['cluster_threshz_408_' gc_info{1}.seedstr '_IOZ.png'];
+    cluster_thresh_zioz_figname = ['thresh_408_cluster_' gc_info{1}.seedstr '_IOZ.png'];
     cluster_thresh_zioz_figpath = fullfile(backwarddir, cluster_thresh_zioz_figname);
     cluster_thresh_zioz_titstr = ['Cluster Corrected Thresholded z(' gc_info{1}.seedstr ' -> IOZ)'];
     do_tfs_fig(cluster_thresh_zioz_fyx, zclim, gc_info{1}.freqs, ...
@@ -304,21 +304,21 @@ if overwrite_all_figs | overwrite_ioz_figs
         gc_shuffle_anal(allvals_Fyx, baselinevals_Fyx, noniozinds, shufflenum, noniozzscore_Fyx);
 
     % 1) no correction for multiple comparisons
-    thresh_znonioz_figname = ['threshz_409_' gc_info{1}.seedstr '_nonIOZ.png'];
+    thresh_znonioz_figname = ['thresh_409_z_' gc_info{1}.seedstr '_nonIOZ.png'];
     thresh_znonioz_figpath = fullfile(backwarddir, thresh_znonioz_figname);
     thresh_znonioz_titstr = ['Thresholded z(' gc_info{1}.seedstr ' -> nonIOZ)'];
     do_tfs_fig(thresh_znonioz_fyx, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, thresh_znonioz_titstr, thresh_znonioz_figpath, timevec);
 
     % 2) pixel-based correction
-    pixel_thresh_znonioz_figname = ['pixel_threshz_410_' gc_info{1}.seedstr '_nonIOZ.png'];
+    pixel_thresh_znonioz_figname = ['thresh_410_pixel_' gc_info{1}.seedstr '_nonIOZ.png'];
     pixel_thresh_znonioz_figpath = fullfile(backwarddir, pixel_thresh_znonioz_figname);
     pixel_thresh_znonioz_titstr = ['Pixel Corrected Thresholded z(' gc_info{1}.seedstr ' -> nonIOZ)'];
     do_tfs_fig(pixel_thresh_znonioz_fyx, zclim, gc_info{1}.freqs, ...
                gc_info{1}.srate, pixel_thresh_znonioz_titstr, pixel_thresh_znonioz_figpath, timevec);
 
     % 3) cluster-based correction
-    cluster_thresh_znonioz_figname = ['cluster_threshz_411_' gc_info{1}.seedstr '_nonIOZ.png'];
+    cluster_thresh_znonioz_figname = ['thresh_411_cluster_' gc_info{1}.seedstr '_nonIOZ.png'];
     cluster_thresh_znonioz_figpath = fullfile(backwarddir, cluster_thresh_znonioz_figname);
     cluster_thresh_znonioz_titstr = ['Cluster Corrected Thresholded z(' gc_info{1}.seedstr ' -> nonIOZ)'];
     do_tfs_fig(cluster_thresh_znonioz_fyx, zclim, gc_info{1}.freqs, ...
