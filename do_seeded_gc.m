@@ -24,18 +24,56 @@ if exist('debug', 'var') && debug==1
 
     [Fxy, Fyx] = mov_bi_ga_seeded(dat, seednum, startsample, endsample, windowlength, ...
                                   order, srate, freqs);
-else
+elseif ~isempty(seedstr)
     channel_names = {channelinfo.Name};
     [eegdata, channel_names, seednum] = exclude_channels(eegdata, channel_names, seedstr);
     windowlength = 100;
     order = 10; % order 20 for 200 Hz data gives half cycle of 5 Hz wave
     freqs = 5:5:srate/2;
 
+    % Fxy is l x m x n
+    % where l = num channels (seed -> all channels)
+    % m = num freqs
+    % n = num samples
+
     [Fxy, Fyx] = mov_bi_ga_seeded(eegdata', seednum, startsample, endsample, windowlength, ...
                                   order, srate, freqs);
 
     [Fxy_baseline, Fyx_baseline] = mov_bi_ga_seeded(eegdata', seednum, 1, round(srate*baseline_s), ...
                                                     windowlength, order, srate, freqs);
+else
+    % for RNS analyses: do all channels
+
+    windowlength = 100;
+    order = 10; % order 20 for 200 Hz data gives half cycle of 5 Hz wave
+    freqs = 5:5:srate/2;
+    result_samples = endsample - startsample - windowlength + 2;
+    bl_samples = round(srate*baseline_s) - windowlength + 1;
+
+    Fxy = zeros(6, length(freqs), result_samples);
+    Fyx = zeros(6, length(freqs), result_samples);
+    Fxy_baseline = zeros(6, length(freqs), bl_samples);
+    Fyx_baseline = zeros(6, length(freqs), bl_samples);
+
+    lastind = 0;
+    for i=1:3
+        numpairs = 4-i;
+
+        [Fxytemp, Fyxtemp] = mov_bi_ga_seeded(eegdata(i:end,:)', 1, startsample, endsample, windowlength, ...
+                                              order, srate, freqs);
+        Fxy(i+lastind:i+lastind+numpairs-1,:,:) = Fxytemp(2:end,:,:);
+        Fyx(i+lastind:i+lastind+numpairs-1,:,:) = Fyxtemp(2:end,:,:);
+
+        [Fxybltemp, Fyxbltemp] = mov_bi_ga_seeded(eegdata(i:end,:)', 1, 1, round(srate*baseline_s), ...
+                                                  windowlength, order, srate, freqs);
+        Fxy_baseline(i+lastind:i+lastind+numpairs-1,:,:) = Fxybltemp(2:end,:,:);
+        Fyx_baseline(i+lastind:i+lastind+numpairs-1,:,:) = Fyxbltemp(2:end,:,:);
+
+        lastind = lastind + numpairs - 1;
+    end
+
+    seedstr = [];
+    channel_names = channelinfo;
 end
 
 timepts = size(Fxy,3);
