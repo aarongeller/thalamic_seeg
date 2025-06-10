@@ -328,7 +328,7 @@ if overwrite_all_figs | overwrite_ioz_figs
                gc_info{1}.srate, pixel_thresh_znonioz_titstr, pixel_thresh_znonioz_figpath, timevec);
 
     % 3) cluster-based correction
-    cluster_thresh_znonioz_figname = ['thresh_411_cluster_nonIOZ' gc_info{1}.seedstr '.png'];
+    cluster_thresh_znonioz_figname = ['thresh_411_cluster_nonIOZ_' gc_info{1}.seedstr '.png'];
     cluster_thresh_znonioz_figpath = fullfile(backwardthreshdir, cluster_thresh_znonioz_figname);
     cluster_thresh_znonioz_titstr = ['Cluster Corrected Thresholded z(nonIOZ -> ' gc_info{1}.seedstr ')'];
     do_tfs_fig(cluster_thresh_znonioz_fyx, zclim, gc_info{1}.freqs, ...
