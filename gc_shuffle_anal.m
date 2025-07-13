@@ -3,10 +3,15 @@ function [uncorrected_tfs pixelcorrected_tfs clustercorrected_tfs] ...
 
 % allvals: elecs x trials x freqs x time
 
-% elec_allvals: trials x freqs x time
-elec_allvals = squeeze(mean(allvals(elecinds, :, :, :), "omitnan"));
-% elec_baselinevals: trials x freqs x time
-elec_baselinevals = squeeze(mean(baselinevals(elecinds, :, :, :), "omitnan"));
+if length(elecinds)>1
+    % elec_allvals: trials x freqs x time
+    elec_allvals = squeeze(mean(allvals(elecinds, :, :, :), "omitnan"));
+    % elec_baselinevals: trials x freqs x time
+    elec_baselinevals = squeeze(mean(baselinevals(elecinds, :, :, :), "omitnan"));
+else
+    elec_allvals = squeeze(allvals(elecinds, :, :, :));
+    elec_baselinevals = squeeze(baselinevals(elecinds, :, :, :));
+end
 
 tic;
 thresh_frac = 0.25; % Cohen Ch 33 sample code 
