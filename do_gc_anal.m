@@ -289,6 +289,32 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
+  case 'UCHAM250108'
+    seedstr = 'PUL1';
+    sz_onset_s =  [95.100 88.88 103.53 237.66 97.227 112.759];
+    switch cond
+      case 'onset'
+        duration_s = 20;
+        channeldirpart = '12_01_25__04_40_16';
+
+        eegfiles =  {'12_01_25__04_40_16/data_block001_notch.mat' ...
+                     '12_01_25__11_04_46/data_block001_notch.mat' ...
+                     '12_01_25__11_36_01/data_block001_notch.mat' ...
+                     '12_01_25__11_48_48/data_block001_notch.mat' ...
+                     '12_01_25__12_01_19/data_block001_notch.mat' ...
+                     '12_01_25__12_30_37/data_block001_notch.mat' ...
+                    };
+
+        ioz = {'LIO1' 'LIO2' 'LIO3' 'LIO4' 'LIO5' 'LIO6' 'LIO7' 'LIO8' ...
+               'LIO9' 'LIO10' 'LSO1' 'LSO2' 'LSO3' 'LSO4' 'LSO5' ...
+               'LSO6' 'LSO7' 'LSO8' 'LSO9' 'LSO10'};
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
+
 end
 
 outputdir = ['granger_' cond];
