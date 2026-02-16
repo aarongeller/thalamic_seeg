@@ -24,6 +24,9 @@ if size(eegdata, 1) ~= length(channelinfo)
     error('Channel info dimensions dont match EEG dimensions.  Exiting.');
 end
 
+result_samples = endsample - startsample - windowlength + 2;
+bl_samples = round(srate*baseline_s) - windowlength + 1;
+
 if exist('debug', 'var') && debug==1
     startsample = 1;
     endsample = 15;
@@ -53,9 +56,6 @@ elseif ~isempty(seedstr)
                                                     windowlength, order, srate, freqs);
 else
     % for RNS analyses: do all channels
-
-    result_samples = endsample - startsample - windowlength + 2;
-    bl_samples = round(srate*baseline_s) - windowlength + 1;
 
     Fxy = zeros(6, length(freqs), result_samples);
     Fyx = zeros(6, length(freqs), result_samples);
