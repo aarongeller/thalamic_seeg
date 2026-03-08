@@ -49,10 +49,10 @@ if docirc
 end
 
 p = gcp; % 4 workers
-         % PB = ProgressBar(points-win+1, taskname='Granger Causality Calculation');
-% ppm = ParforProgressbar(total, 'parpool', {'local', 12}, ...
-%                         'showWorkerProgress', true, 'title', ...
-%                         'Granger Causality Calculation');
+
+ppm = ParforProgressbar(total, 'parpool', {'local', 12}, ...
+                        'showWorkerProgress', true, 'title', ...
+                        'Granger Causality Calculation');
 
 parfor t = 1:points-win+1
     endind = t+startp+win-2;
@@ -75,15 +75,13 @@ parfor t = 1:points-win+1
                 fxy(c,:,t) = nan(size(b,1)-1, length(freq));
                 fyx(c,:,t) = nan(size(b,1)-1, length(freq));
             end
-            % pause(100/total);
-            % ppm.increment();
-            % count(PB);
-            % PB.count
+            pause(100/total);
+            ppm.increment();
         end
     end
 end
 
-% delete(ppm);
+delete(ppm);
 
 Fxy = fxy;
 Fyx = fyx;
