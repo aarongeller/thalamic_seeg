@@ -47,7 +47,6 @@ switch subj
     sz_offset_s = nan;
     if strcmp(cond, 'onset')
         duration_s = 20;
-        channeldirpart = '10_04_23__12_38_07';
         eegfiles = { '10_04_23__12_38_07/data_block001_notch.mat' ...
                      '10_04_23__18_58_17/data_block001_notch.mat' ...
                      '11_04_23__07_54_50/data_block001_notch.mat' ...
@@ -75,7 +74,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '25_08_23__21_20_17';
         eegfiles = { '25_08_23__21_20_17/data_block001.mat' ...
                      '26_08_23__10_48_33/data_block001.mat' ...
                      '26_08_23__14_25_10/data_block001.mat' ...
@@ -112,7 +110,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '25_07_23__03_33_09';
         eegfiles = { '25_07_23__03_33_09/data_block001.mat' ...
                      '25_07_23__05_04_19/data_block001.mat' ...
                      '25_07_23__06_19_48/data_block001.mat' ...
@@ -136,8 +133,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '02_08_22__13_02_47';
-
         eegfiles = {'02_08_22__13_02_47/data_block001_notch.mat' ...
                     '02_08_22__13_38_36/data_block001_notch.mat' ...
                     '02_08_22__13_41_01/data_block001_notch.mat' ...
@@ -172,8 +167,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '21_09_22__01_12_19';
-
         eegfiles = {'21_09_22__01_12_19/data_block001_notch.mat' ...
                     '21_09_22__02_22_43/data_block001_notch.mat' ...
                     '21_09_22__05_33_34/data_block001_notch.mat' ...
@@ -209,8 +202,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '06_02_24__19_11_17';
-
         eegfiles = {'06_02_24__19_11_17/data_block001_notch.mat' ...
                     '07_02_24__00_16_31/data_block001_notch.mat' ...
                     '07_02_24__13_33_37/data_block001_notch.mat' ...
@@ -243,8 +234,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '06_04_24__09_39_50';
-
         eegfiles = {'06_04_24__09_39_50/data_block001_notch.mat' ...
                     '06_04_24__14_10_10/data_block001_notch.mat' ...
                    };
@@ -267,8 +256,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '15_03_24__09_02_13';
-
         eegfiles =  {'15_03_24__09_02_13/data_block001_notch.mat' ...
                      '15_03_24__09_16_49/data_block001_notch.mat' ...
                      '15_03_24__11_50_31/data_block001_notch.mat' ...
@@ -295,8 +282,6 @@ switch subj
     switch cond
       case 'onset'
         duration_s = 20;
-        channeldirpart = '12_01_25__04_40_16';
-
         eegfiles =  {'12_01_25__04_40_16/data_block001_notch.mat' ...
                      '12_01_25__11_04_46/data_block001_notch.mat' ...
                      '12_01_25__11_36_01/data_block001_notch.mat' ...
@@ -314,12 +299,59 @@ switch subj
         extra_offset = 0;
         eegfile = 'data_block001.mat';
     end
+  case 'UCHJR250122'
+    seedstr = 'RCM2';
+    sz_onset_s =  [82.754 67.140 80.031];
+    switch cond
+      case 'onset'
+        duration_s = 20;
 
+        eegfiles =  {'25_01_25__10_55_02/data_block001_notch.mat' ...
+                     '25_01_25__19_42_29/data_block001_notch.mat' ...
+                     '26_01_25__07_58_13/data_block001_notch.mat' ...
+                    };
+
+        ioz = {'RAH1' 'RAH2' 'RAH3' 'RAH4' 'RAH11' 'RAH12' 'RAH13' 'RAH14' ...
+               'RPH1' 'RPH2' 'RPH3' 'RPH4' 'RPH9' 'RPH10' 'RPH11' 'RPH12' ...
+               'RAMY1' 'RAMY2' 'RAMY3' 'RAMY4' 'RAMY5' 'RAMY6' ...
+               'RAMY11' 'RAMY12' 'RAMY13' 'RAMY14' 'RAMY15'};
+
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
+
+  case 'UCHMP250618'
+    seedstr = 'LIP1';
+    sz_onset_s =  [83.963 104.396 136.906 137.455 141.005];
+    switch cond
+      case 'onset'
+        duration_s = 20;
+
+        eegfiles =  {'18_06_25__22_47_39/data_block001_notch.mat' ...
+                     '18_06_25__23_17_00/data_block001_notch.mat' ...
+                     '19_06_25__05_40_59/data_block001_notch.mat' ...
+                     '19_06_25__08_41_00/data_block001_notch.mat' ...
+                     '20_06_25__01_48_46/data_block001_notch.mat' ...
+                    };
+
+        ioz = {'LES8' 'LES9' 'LES10' 'LPSM12' 'LPSM12' 'LPSM13' ...
+               'LPSM14' 'LPSM15'};
+      case 'wholesz'
+        duration_s = 120;
+        offset_s = 60;
+        extra_offset = 0;
+        eegfile = 'data_block001.mat';
+    end
 end
 
 outputdir = ['granger_' cond];
 analdir = fullfile('analyses', subj);
 figsdir = fullfile(analdir, 'figs', outputdir);
+
+channeldirpart = fileparts(eegfiles{1});
 
 load(fullfile([prefix channeldirpart], 'channel.mat'));
 
