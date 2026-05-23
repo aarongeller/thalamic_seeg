@@ -91,11 +91,11 @@ def ieeg_json(task, chan_types, srate, dur, refpair):
         + "}"
     return json_str
 
-def get_edfs(shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir, postop_ieeg_path):
+def get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir, postop_ieeg_path):
     # Start the MATLAB engine
     eng = matlab.engine.start_matlab()
     eng.addpath('/Users/aaron/Documents/school/4202/thalamic_seeg')
-    mf = eng.get_sz_eeg_mat(shortsubj)
+    mf = eng.get_sz_eeg_mat(fullsubj)
     chan_types = get_seeg_channels(eng, bsprefix, shortsubj, mf[0])
     # Stop the engine when finished
     eng.quit()
@@ -161,7 +161,11 @@ def get_recon_pdf(subj_opsceadir, shortsubj, postop_ieeg_path, subjstr):
     shutil.copy(reconpath, recontargetpath)
 
 def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
-    shortsubj = fullsubj[:5]
+    hasshort = ['UCHSN230406', 'UCHGG230823', 'UCHVG230719', 'UCHDR220801', 'UCHAK240403']
+    if fullsubj in hasshort:
+        shortsubj = fullsubj[:5]
+    else:
+        shortsubj = fullsubj
     subjstr = "sub-" + fullsubj
     subj_fsdir = os.path.join(fsdir, shortsubj)
     subj_opsceadir = os.path.join(opsceaprefix, shortsubj)
@@ -170,6 +174,7 @@ def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
             "postop_anat": os.path.join(topdir, subjstr, "ses-postop", "anat"),
             "postop_ieeg": os.path.join(topdir, subjstr, "ses-postop", "ieeg")}
 
+    print("***** Exporting: " + fullsubj)
     # make dirs
     for d in dirs.values():
         if not os.path.exists(d):
@@ -184,7 +189,7 @@ def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
     get_postop_ct(subjstr, subj_fsdir, dirs["postop_anat"])
 
     # 3) get seizure + resting state EDFs
-    get_edfs(shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir, dirs["postop_ieeg"])
+    get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir, dirs["postop_ieeg"])
 
     # 4) get electrode info
     get_electrode_info(bsprefix, shortsubj, subjstr, t1targetpath, dirs["postop_ieeg"])
@@ -193,11 +198,21 @@ def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
     get_recon_pdf(subj_opsceadir, shortsubj, dirs["postop_ieeg"], subjstr)
 
 if __name__=="__main__":
-    fullsubj = sys.argv[1]
 
-    if len(sys.argv)<3:
-        topdir = "/Users/aaron/Downloads/thalseeg_exports/rawdata"
-    else:
+    if len(sys.argv)==3:
         topdir = sys.argv[2]
+        subjlist = [sys.argv[1]]
+    else:
+        if len(sys.argv)==2:
+            topdir = "/Users/aaron/Downloads/thalseeg_exports/rawdata"
+            subjlist = [sys.argv[1]]
+        else:
+            topdir = "/Users/aaron/Downloads/thalseeg_exports/rawdata"
+            subjlist = ["UCHAK240403", "UCHAM250108", "UCHDR220801",
+                        "UCHDR240313", "UCHGG230823", "UCHSM240205",
+                        "UCHSN230406", "UCHVG230719"]
+            # to be re-reconed: UCHCV220919
+            # to be analyzed: UCHJR250122, UCHTD250331
 
-    do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict)
+    for s in subjlist:
+        do_all(s, topdir, fsdir, bsprefix, opsceaprefix, reference_dict)
