@@ -52,7 +52,7 @@ def get_seeg_channels(eng, bsprefix, subj, matfile):
     ll = eng.get_seeg_channels(bspath)
     return list(map(lambda x: int(x), ll[0]))
 
-def ieeg_json(task, chan_types, srate, dur, refpair):
+def ieeg_json(task, description, chan_types, srate, dur, refpair):
     if len(refpair)==2:
         ref1 = refpair[0]
         ref2 = refpair[1]
@@ -60,14 +60,14 @@ def ieeg_json(task, chan_types, srate, dur, refpair):
         ref1 = "A5"
         ref2 = "A6"
 
-    # to do: check hardwarefilters
+    # to do: check hardwarefilters, add sz onset time and channels to taskdescription
     json_str =  "{\n" \
         + "\t\"TaskName\":\"" + task + "\",\n" \
         + "\t\"InstitutionName\":\"University of Colorado Hospital\",\n" \
         + "\t\"InstitutionAddress\":\"1635 Aurora Ct, Aurora CO 80045\",\n" \
         + "\t\"Manufacturer\":\"Nihon Kohden\",\n" \
         + "\t\"ManufacturersModelName\":\"n/a\",\n" \
-        + "\t\"TaskDescription\":\"n/a\",\n" \
+        + "\t\"TaskDescription\":\"" + description + "\",\n" \
         + "\t\"Instructions\":\"n/a\",\n" \
         + "\t\"iEEGReference\":\"Average of " + ref1 + " and " + ref2 + "\",\n" \
         + "\t\"SamplingFrequency\":" + str(srate) + ",\n" \
@@ -95,8 +95,8 @@ def get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir,
     # Start the MATLAB engine
     eng = matlab.engine.start_matlab()
     eng.addpath('/Users/aaron/Documents/school/4202/thalamic_seeg')
-    mf = eng.get_sz_eeg_mat(fullsubj)
-    chan_types = get_seeg_channels(eng, bsprefix, shortsubj, mf[0])
+    mf = eng.get_sz_info(fullsubj)
+    chan_types = get_seeg_channels(eng, bsprefix, shortsubj, mf['eegfiles'][0])
     # Stop the engine when finished
     eng.quit()
 
@@ -106,7 +106,7 @@ def get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir,
         print("Reference info not found for " + fullsubj)
         refpair = []
 
-    for i,f in enumerate(mf):
+    for i,f in enumerate(mf['eegfiles']):
         fparts = f.split("/")
         dirfrag = shortsubj + "_" + fparts[0]
         edfsource_name =  dirfrag + ".edf"
@@ -119,7 +119,8 @@ def get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir,
         jsontarget_name  = target_stem + ".json"
         jsontarget_path = os.path.join(postop_ieeg_path, jsontarget_name)
         of = open(jsontarget_path, 'w')
-        of.write(ieeg_json("Seizure", chan_types, raw.info.get("sfreq"), raw.duration, refpair))
+        description = "sz_onset_time_s: " + str(mf['sz_onset_s'][0][i]) + "; IOZ: " + str(mf['ioz'])
+        of.write(ieeg_json("Seizure", description, chan_types, raw.info.get("sfreq"), raw.duration, refpair))
         of.close()
 
     # 4) get resting state EEG
@@ -132,7 +133,7 @@ def get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir,
     jsontarget_path = os.path.join(postop_ieeg_path, jsontarget_name)
     raw = mne.io.read_raw_edf(edfsource_path, verbose=False)
     of = open(jsontarget_path, 'w')
-    of.write(ieeg_json("Resting", chan_types, raw.info.get("sfreq"), raw.duration, refpair))
+    of.write(ieeg_json("Resting", "n/a", chan_types, raw.info.get("sfreq"), raw.duration, refpair))
     of.close()
 
 def get_electrode_info(bsprefix, shortsubj, subjstr, t1targetpath, postop_ieeg_path):
@@ -192,6 +193,9 @@ def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
     get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir, dirs["postop_ieeg"])
 
     # 4) get electrode info
+    if fullsubj=="UCHCV220919":
+        shortsubj = "UCHCV220919v2"
+        subj_opsceadir = os.path.join(opsceaprefix, shortsubj)
     get_electrode_info(bsprefix, shortsubj, subjstr, t1targetpath, dirs["postop_ieeg"])
 
     # 5) get recon pdf
@@ -204,14 +208,14 @@ if __name__=="__main__":
         subjlist = [sys.argv[1]]
     else:
         if len(sys.argv)==2:
-            topdir = "/Users/aaron/Downloads/thalseeg_exports/rawdata"
+            topdir = "/Users/aaron/Downloads/thalamic_seeg_exports/rawdata"
             subjlist = [sys.argv[1]]
         else:
-            topdir = "/Users/aaron/Downloads/thalseeg_exports/rawdata"
+            topdir = "/Users/aaron/Downloads/thalamic_seeg_exports/rawdata"
             subjlist = ["UCHAK240403", "UCHAM250108", "UCHDR220801",
                         "UCHDR240313", "UCHGG230823", "UCHSM240205",
-                        "UCHSN230406", "UCHVG230719"]
-            # to be re-reconed: UCHCV220919
+                        "UCHSN230406", "UCHVG230719", "UCHCV220919"]
+
             # to be analyzed: UCHJR250122, UCHTD250331
 
     for s in subjlist:
