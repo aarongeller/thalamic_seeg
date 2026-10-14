@@ -9,24 +9,30 @@ fsdir = '/Applications/freesurfer/subjects'
 bsprefix = "/Users/aaron/Documents/brainstorm_db/IEEG_visualization/data/"
 opsceaprefix = "/Users/aaron/Documents/MATLAB/OPSCEA-main/OPSCEADATA"
 
-reference_dict = {"UCHJE260511": ["LFP5", "LFP6"],
-                  "UCHKJ260323": ["LOF5", "LOF6"],
-                  "UCHJG260311": ["ROF5", "ROF6"],
-                  "UCHPS260218": ["RAH5", "RAH6"],
-                  "UCHJB260128": ["LAH5", "LAH6"],
-                  "UCHHT251212": ["LAC5", "LAC6"],
-                  "UCHMP250618": ["LAMY5", "LAMY6"],
-                  "UCHAV250423": ["RTP5", "RTP6"],
-                  "UCHTD250331": ["LSO5", "LSO6"],
-                  "UCHEO250312": ["LOF5", "LOF6"],
-                  "UCHJR250122": ["ROF5", "ROF6"],
-                  "UCHAM250108": ["LAMY5", "LAMY6"],
-                  "UCHAK240403": ["LAI5", "LAI6"],
-                  "UCHDR240313": ["LAC5", "LAC6"],
-                  "UCHGG230823": ["RPT5", "RPT6"],
-                  "UCHMM260302": ["LAST5", "LAST6"],
-                  "UCHHM251002": ["LTP5", "LTP6"],
-                  "UCHSM240205": ["LOF5", "LOF6"]}
+reference_dict = { # fields: reference pair, has short name, data ready
+    "UCH220801DR": [None, True, True],
+    "UCH220919CV": [None, False, True],
+    "UCH230406SN": [None, True, True],
+    "UCH230719VG": [None, True, True],
+    "UCH230823GG": [["RPT5", "RPT6"], True, True],
+    "UCH240205SM": [["LOF5", "LOF6"], False, True],
+    "UCH240313DR": [["LAC5", "LAC6"], False, True],
+    "UCH240403AK": [["LAI5", "LAI6"], True, True],
+    "UCH250108AM": [["LAMY5", "LAMY6"], False, True],
+    "UCH250122JR": [["ROF5", "ROF6"], False, True],
+    "UCH250312EO": [["LOF5", "LOF6"], False, False], # according to recon missed thalamus
+    "UCH250331TD": [["LSO5", "LSO6"], False, False], # no electrographic seizures recorded
+    "UCH250423AV": [["RTP5", "RTP6"], True, True],
+    "UCH250618MP": [["LAMY5", "LAMY6"], False, False],
+    "UCH251002HM": [["LTP5", "LTP6"], False, False],
+    "UCH251212HT": [["LAC5", "LAC6"], False, False],
+    "UCH260128JB": [["LAH5", "LAH6"], False, False],
+    "UCH260218PS": [["RAH5", "RAH6"], False, False],
+    "UCH260302MM": [["LAST5", "LAST6"], False, False],
+    "UCH260311JG": [["ROF5", "ROF6"], False, False],
+    "UCH260323KJ": [["LOF5", "LOF6"], False, False],
+    "UCH260511JE": [["LFP5", "LFP6"], False, False],
+}
 
 def get_preop_mri(subjstr, subj_fsdir, preop_anat_path, ts1str, t1targetpath):
     t1mridir = os.path.join(subj_fsdir, "mri", "orig")
@@ -101,7 +107,10 @@ def get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir,
     eng.quit()
 
     try:
-        refpair = reference_dict[fullsubj]
+        refpair = reference_dict[fullsubj][0]
+        if refpair is None:
+            print("Reference info not found for " + fullsubj)
+            refpair = []
     except KeyError:
         print("Reference info not found for " + fullsubj)
         refpair = []
@@ -162,11 +171,10 @@ def get_recon_pdf(subj_opsceadir, shortsubj, postop_ieeg_path, subjstr):
     shutil.copy(reconpath, recontargetpath)
 
 def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
-    hasshort = ['UCHSN230406', 'UCHGG230823', 'UCHVG230719', 'UCHDR220801', 'UCHAK240403']
-    if fullsubj in hasshort:
-        shortsubj = fullsubj[:5]
+    if reference_dict[fullsubj][1]: # has short name
+        shortsubj = fullsubj[:3] + fullsubj[-2:]
     else:
-        shortsubj = fullsubj
+        shortsubj = fullsubj[:3] + fullsubj[-2:] + fullsubj[3:9]
     subjstr = "sub-" + fullsubj
     subj_fsdir = os.path.join(fsdir, shortsubj)
     subj_opsceadir = os.path.join(opsceaprefix, shortsubj)
@@ -193,7 +201,7 @@ def do_all(fullsubj, topdir, fsdir, bsprefix, opsceaprefix, reference_dict):
     get_edfs(fullsubj, shortsubj, subjstr, bsprefix, reference_dict, subj_fsdir, dirs["postop_ieeg"])
 
     # 4) get electrode info
-    if fullsubj=="UCHCV220919":
+    if fullsubj=="UCH220919CV":
         shortsubj = "UCHCV220919v2"
         subj_opsceadir = os.path.join(opsceaprefix, shortsubj)
     get_electrode_info(bsprefix, shortsubj, subjstr, t1targetpath, dirs["postop_ieeg"])
@@ -207,16 +215,12 @@ if __name__=="__main__":
         topdir = sys.argv[2]
         subjlist = [sys.argv[1]]
     else:
+        topdir = "/Users/aaron/Downloads/thalamic_seeg_exports/rawdata"
         if len(sys.argv)==2:
-            topdir = "/Users/aaron/Downloads/thalamic_seeg_exports/rawdata"
             subjlist = [sys.argv[1]]
         else:
-            topdir = "/Users/aaron/Downloads/thalamic_seeg_exports/rawdata"
-            subjlist = ["UCHAK240403", "UCHAM250108", "UCHDR220801",
-                        "UCHDR240313", "UCHGG230823", "UCHSM240205",
-                        "UCHSN230406", "UCHVG230719", "UCHCV220919"]
-
-            # to be analyzed: UCHJR250122, UCHTD250331
+            subjlist = reference_dict.keys()
 
     for s in subjlist:
-        do_all(s, topdir, fsdir, bsprefix, opsceaprefix, reference_dict)
+        if reference_dict[s][2]:
+            do_all(s, topdir, fsdir, bsprefix, opsceaprefix, reference_dict)
