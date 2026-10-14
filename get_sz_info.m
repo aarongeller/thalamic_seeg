@@ -1,7 +1,7 @@
 function info = get_sz_info(subj)
 
 switch subj
-  case 'UCHSN230406'
+  case 'UCH230406SN'
     info.seedstr = 'LCM2';
     info.ioz = {'LPT5', 'LPT6', 'LPT7', 'LPT8'};
     info.eegfiles =  { '10_04_23__12_38_07/data_block001_notch.mat' ...
@@ -19,7 +19,7 @@ switch subj
                      };
     info.sz_onset_s =  [97.6 84.4 97.9 79 66.4 82.1 81 102.6 60.6 91.2 ...
                         105.4 70.4 ];
-  case 'UCHGG230823'
+  case 'UCH230823GG'
     info.seedstr = 'RPI1';
     info.ioz = {'RAH1', 'RAH2', 'RAH3', 'RPH1', 'RPH2', 'RPH3'};
     info.eegfiles = { '25_08_23__21_20_17/data_block001.mat' ...
@@ -41,7 +41,7 @@ switch subj
          };
     info.sz_onset_s  = [83 83.9 86.4 82.5 69.6 69.6 83.8 69.9 93.6 83.7 83.7 ...
                    72 68.4 83.1 70.3 76.5];
-  case 'UCHVG230719'
+  case 'UCH230719VG'
     info.seedstr = 'LANT1';
     info.ioz = {'LAH1', 'LAH2', 'LAH3', 'LAH4', 'LPH1', 'LPH2', 'LPH3', 'LPH4'};
     info.eegfiles = { '25_07_23__03_33_09/data_block001.mat' ...
@@ -49,7 +49,7 @@ switch subj
                       '25_07_23__06_19_48/data_block001.mat' ...
                     };
     info.sz_onset_s = [83.4 82.3 82.6];
-  case 'UCHDR220801'
+  case 'UCH220801DR'
     info.seedstr = 'LANT1';
     info.ioz = {'MEGA6', 'MEGA7'};
     info.eegfiles = {'02_08_22__13_02_47/data_block001_notch.mat' ...
@@ -68,7 +68,7 @@ switch subj
                };
     info.sz_onset_s = [46.8 53.4 47.9 46.5 47.6 46.8 47.3 47 47.2 45.5 ...
                   44.9 46.8 47.5];
-  case 'UCHCV220919'
+  case 'UCH220919CV'
     info.seedstr = 'LPUL1';
     ioz_L_small = {'LTO1' 'LTO2' 'LTO3' 'LTO4'};
     ioz_L_big = {ioz_L_small{:} 'LTO5' 'LTO6' 'LTO7' 'LTO8' 'LTO9' 'LTO10' ...
@@ -88,7 +88,7 @@ switch subj
                     };
     info.sz_onset_s = [80.8 71.096 75.46 78.73 82.39 82.24 89.63 78.24 ...
                   64.54 80.33];
-  case 'UCHSM240205'
+  case 'UCH240205SM'
     info.seedstr = 'LPI1';
     info.ioz = {'LAH1' 'LAH2' 'LAH3' 'LAH4' 'LAH5' 'LPH1' 'LPH2' 'LPH3' 'LPH4' 'LPH5' ...
            'LBT1' 'LBT2' 'LBT3' 'LAMY1' 'LAMY2' 'LAMY3' 'LAMY4'};
@@ -102,14 +102,14 @@ switch subj
                 '10_02_24__14_19_51/data_block001_notch.mat' ...
                };
     info.sz_onset_s = [52.53 58.96 62.24 60.58 66.14 67.97 60.14 60.99];
-  case 'UCHAK240403'
+  case 'UCH240403AK'
     info.seedstr = 'LANT1';
     info.ioz = {'LMI5', 'LMI6' 'LMI7'};
     info.eegfiles = {'06_04_24__09_39_50/data_block001_notch.mat' ...
                 '06_04_24__14_10_10/data_block001_notch.mat' ...
                };
     info.sz_onset_s = [102.91 67.05];
-  case 'UCHDR240313'
+  case 'UCH240313DR'
     info.seedstr = 'LTOM1';
     info.ioz = {'RTOI1' 'RTOI2' 'RTOI3' 'RTOI4' 'RTOI5' 'RTOI6'...
            'LTOI1' 'LTOI2' 'LTOI3' 'LTOI4'};
@@ -120,7 +120,7 @@ switch subj
                  '15_03_24__16_13_41/data_block001_notch.mat' ...
                 };
     info.sz_onset_s =  [74.098 71.294 79.96 86.979 87.156];
-  case 'UCHAM250108'
+  case 'UCH250108AM'
     info.seedstr = 'PUL1';
     info.ioz = {'LIO1' 'LIO2' 'LIO3' 'LIO4' 'LIO5' 'LIO6' 'LIO7' 'LIO8' ...
                 'LIO9' 'LIO10' 'LSO1' 'LSO2' 'LSO3' 'LSO4' 'LSO5' ...
@@ -133,7 +133,7 @@ switch subj
                  '12_01_25__12_30_37/data_block001_notch.mat' ...
                 };
     info.sz_onset_s =  [95.100 88.88 103.53 237.66 97.227 112.759];
-  case 'UCHJR250122'
+  case 'UCH250122JR'
     info.seedstr = 'RCM2';
     info.eegfiles =  {'25_01_25__10_55_02/data_block001_notch.mat' ...
                  '25_01_25__19_42_29/data_block001_notch.mat' ...
@@ -144,7 +144,7 @@ switch subj
            'RAMY1' 'RAMY2' 'RAMY3' 'RAMY4' 'RAMY5' 'RAMY6' ...
            'RAMY11' 'RAMY12' 'RAMY13' 'RAMY14' 'RAMY15'};
     info.sz_onset_s =  [82.754 67.140 80.031];
-  case 'UCHMP250618'
+  case 'UCH250618MP'
     info.seedstr = 'LIP1';
     info.ioz = {'LES8' 'LES9' 'LES10' 'LPSM12' 'LPSM12' 'LPSM13' ...
            'LPSM14' 'LPSM15'};
@@ -155,6 +155,23 @@ switch subj
                  '20_06_25__01_48_46/data_block001_notch.mat' ...
                 };
     info.sz_onset_s =  [83.963 104.396 136.906 137.455 141.005];
+  case 'UCH250423AV'
+    info.seedstr = 'LPH1';
+    info.ioz = {'RAH1' 'RAH2' 'RAH3' 'RAH4' 'RAMY1' 'RAMY2' 'RAMY3' 'RAMY4' ...
+                'RBT1' 'RBT2' 'RBT3' 'RBT4' 'RBT5' };
+    info.eegfiles =  {'23_04_25__21_04_22/data_block001_notch.mat' ...
+                      '26_04_25__08_32_46/data_block001_notch.mat' ...
+                      '26_04_25__10_21_53/data_block001_notch.mat' ...
+                      '26_04_25__12_10_23/data_block001_notch.mat' ...
+                      '26_04_25__13_38_16/data_block001_notch.mat' ...
+                      '26_04_25__14_28_17/data_block001_notch.mat' ...
+                      '26_04_25__15_39_31/data_block001_notch.mat' ...
+                      '26_04_25__17_42_21/data_block001_notch.mat' ...
+                      '26_04_25__18_53_52/data_block001_notch.mat' ...
+                      '26_04_25__20_05_59/data_block001_notch.mat' ...
+                };
+    info.sz_onset_s =  [157.326 173.110 157.032 157.531 159.755 ...
+                        153.816 157.177 161.200 130.577 148.969];
   otherwise
     ME = MException('ME:BadSubject', ['Subject ' subj ' not found.']);
     throw(ME);
