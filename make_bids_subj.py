@@ -23,7 +23,7 @@ reference_dict = { # fields: reference pair, has short name, data ready
     "UCH250312EO": [["LOF5", "LOF6"], False, False], # according to recon missed thalamus
     "UCH250331TD": [["LSO5", "LSO6"], False, False], # no electrographic seizures recorded
     "UCH250423AV": [["RTP5", "RTP6"], True, True],
-    "UCH250618MP": [["LAMY5", "LAMY6"], False, False],
+    "UCH250618MP": [["LAMY5", "LAMY6"], False, True],
     "UCH251002HM": [["LTP5", "LTP6"], False, False],
     "UCH251212HT": [["LAC5", "LAC6"], False, False],
     "UCH260128JB": [["LAH5", "LAH6"], False, False],
